@@ -8,7 +8,7 @@ class Agent(MovableObject):
 
   def __init__(self, num, vertex, goal):
     Agent.number_agents += 1
-    super().__init__(self, num, vertex, goal)
+    super().__init__(num, vertex, goal)
 
   #------------------------------------------------Actions------------------------------------------------------
 
@@ -17,9 +17,9 @@ class Agent(MovableObject):
     Moves the agent into the vertex if the vertex is clear and adjacent.
     """
     if vertex in self.pos.adjacency:
-      if is_vertex_clear(vertex) == 2 or is_vertex_clear(vertex) == 3:
-        occupy_vertex_alone(vertex)
-        clear_vertex_alone(self.pos)
+      if vertex.occupied == vertex.CONTAINER or vertex.occupied == vertex.EMPTY:
+        self.occupy_vertex_alone(vertex)
+        self.clear_vertex_alone(self.pos)
         self.pos = vertex
         return True
     else:
@@ -30,9 +30,9 @@ class Agent(MovableObject):
     Moves the container at the current position of the agent and the agent itself to an adjacent vertex.
     """
     if vertex in self.pos.adjacency and self.pos == container.pos:
-      if is_vertex_clear(vertex) == 3:
-        occupy_vertex_conatiner(vertex)
-        clear_vertex_container(self.pos)
+      if vertex.occupied == vertex.EMPTY:
+        self.occupy_vertex_container(vertex)
+        self.clear_vertex_container(self.pos)
         self.pos = vertex
         container.pos = vertex
         return True

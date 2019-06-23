@@ -10,23 +10,8 @@ class MovableObject():
 
   #-----------------------------------------------Helper Functions----------------------------------------------
 
-  def is_vertex_clear(vertex):
-    """
-    Checks if vertex, the agent wants to move in, is clear.
 
-    return a hint to the type of object occupying the vertex..
-    """
-    if vertex.occupied == vertex.AGENT:
-      return 0
-    elif vertex.occupied == vertex.AGENT_CONTAINER:
-      return 1
-    elif vertex.occupied == vertex.CONTAINER:
-      return 2
-    else: # vertex is clear
-      return 3
-
-
-  def clear_vertex_container(vertex):
+  def clear_vertex_container(self, vertex):
     """
     Changes the state of the vertex, when the agent leaves it with the container.
     """
@@ -34,7 +19,7 @@ class MovableObject():
       vertex.occupied = vertex.EMPTY
     #only possible case otherwise agent performs unvalid move.
 
-  def occupy_vertex_container(vertex):
+  def occupy_vertex_container(self, vertex):
     """
     Changes the state of the vertex, when the agent enters it with the container.
     """
@@ -42,7 +27,7 @@ class MovableObject():
       vertex.occupied = vertex.AGENT_CONTAINER
     #only possible case otherwise agent performs unvalid move.
 
-  def clear_vertex_alone(vertex):
+  def clear_vertex_alone(self, vertex):
     """
     Changes the state of the vertex, when the agent leaves it.
     """
@@ -53,7 +38,7 @@ class MovableObject():
     #no need to check other cases since the agent had to be at that node.
 
 
-  def occupy_vertex_alone(vertex):
+  def occupy_vertex_alone(self, vertex):
     """
     Changes the state of the vertex, when the agent moves into it.
     """
