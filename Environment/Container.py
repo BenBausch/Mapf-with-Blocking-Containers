@@ -1,5 +1,6 @@
 from Node import *
-
+from Agent import *
+from MoveableObject import *
 
 class Container(MovableObject):
 
@@ -14,7 +15,7 @@ class Container(MovableObject):
     Moves the agent into the vertex if the vertex is clear and adjacent.
     """
     if vertex in self.pos.adjacency and self.pos == agent.pos:
-      if or is_vertex_clear(vertex) == 3:
+      if is_vertex_clear(vertex) == 3:
         occupy_vertex_alone(vertex)
         clear_vertex_alone(self.pos)
         self.pos = vertex
@@ -28,7 +29,7 @@ class Container(MovableObject):
     Moves the container at the current position of the agent and the agent itself to an adjacent vertex.
     """
     if vertex in agent.pos.adjacency:
-      if is_ vertex_clear(vertex) == 2 or is_vertex_clear(vertex) == 3:
+      if is_vertex_clear(vertex) == 2 or is_vertex_clear(vertex) == 3:
         occupy_vertex_conatiner(vertex)
         clear_vertex_container(agent.pos)
         agent.pos = vertex
