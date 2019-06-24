@@ -38,7 +38,7 @@ class Astar():
         path=[] 
         node = best_node
         while node.parent is not None:
-          path.append(node)
+          path.append(node.vertex)
           node = node.parent
         return path[::-1]
       
