@@ -1,6 +1,8 @@
 from Graph import *
 from Agent import *
 from Container import *
+from Heuristic import *
+
 
 G = Graph(3,2)
 
@@ -26,6 +28,8 @@ for i in range(G.xdim):
 
 
 print("--------------------------------------------------------------------------------------")
+
+print("Heuristic: " + str(dir_dist(G.nodes[0][1], G.nodes[1][2])))
 
 #A1.move_container(C1, G.nodes[1][2])
 
