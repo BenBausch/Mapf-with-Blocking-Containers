@@ -10,22 +10,24 @@ from Heuristic import *
 
 class AstarNode():
 
-  def __init__(self, parent, g, h, vertex):
+  def __init__(self, parent, g, h, vertex, time):
     """
     An Astar node is used during single-Agent planning.
 
     Arguments:
       parent: parent node in search tree
       h: is the cost estimated by the heuristic function.
-      vertex: is the vertex in the actual environment for planning in the environment setting.
-              The planning is performed on Astar nodes, but these have to correspond to a
-              vertex in the environment.
+      vertex: is the vertex in the actual environment for planning in the
+      environment setting.
+      The planning is performed on Astar nodes, but these have to correspond to
+      a vertex in the environment.
     """
     self.vertex = vertex
     self.parent = parent
     self.g = g
     self.h = h
     self.f = g + h
+    self.time = time
 
 
 
@@ -34,19 +36,19 @@ class Astar():
   Astar algorithmen for single-Agent planning.
   """
 
-  def __init__(self, h, World, Agent):
-    self.Agent = Agent
-    self.h = h
-    self.goal  = Agent.goal
-    self.start = Agent.pos
-    self.World = World
+  def __init__(self, heuristic, agent):
+    self.agent = agent
+    self.h = heuristic
+    self.goal  = agent.goal
+    self.start = agent.pos
 
 
   def find_path(self):
     """
-    Find a path in the environment, using the Astar algorithmen for single-Agent planning.
+    Find a path in the environment, using the Astar algorithmen for
+    single-Agent planning.
     """
-    start = AstarNode(None, 0, self.h(self.start, self.goal), self.start)
+    start = AstarNode(None, 0, self.h(self.start, self.goal), self.start, 0)
     open_list = [start]
     closed_list = []
 
@@ -66,7 +68,8 @@ class Astar():
         path.append((node.vertex, node.f))
         return path[::-1]
 
-      #expand the node if the node is not the goal and afterwards add to node to closed_list
+      #expand the node if the node is not the goal and afterwards add to node
+      #to closed_list
       self.expand_node(best_node, open_list, closed_list)
 
       #remove node from open_list
@@ -108,10 +111,11 @@ class Astar():
     If node is goal node th function returns true.
     node: an Astar node to be expanded
     open_list: list of nodes, which can be opened next.
-    closed_list: list of nodes, that have been expaneded and should not be opened again
+    closed_list: list of nodes, that have been expaneded and should not be
+    opened again
     """
     for n in node.vertex.adjacency:
-      A = AstarNode(node, node.g+1, self.h(n, self.goal), n)
+      A = AstarNode(node, node.g+1, self.h(n, self.goal), n, node.time+1)
       if not(self.check_already_opened(n, closed_list)):
         open_list.append(A)
         closed_list.append(n)
@@ -121,7 +125,8 @@ class Astar():
     """
     Checks if node already in closed_list
     n: a vertex.
-    closed_list: list of nodes, that have been expaneded and should not be opened again
+    closed_list: list of nodes, that have been expaneded and should not be
+    opened again
     """
     for v in closed_list:
       if n.id == v.id:

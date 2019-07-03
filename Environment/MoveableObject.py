@@ -8,12 +8,12 @@ class MovableObject():
     self.goal = goal
 
 
-  #-----------------------------------------------Helper Functions----------------------------------------------
+  #-----------------------------------------------Helper Functions------------
 
 
   def clear_vertex_container(self, vertex):
     """
-    Changes the state of the vertex, when the agent leaves it with the container.
+    Changes the state of the vertex, when the agent leaves it with the container
     """
     if vertex.occupied == vertex.AGENT_CONTAINER:
       vertex.occupied = vertex.EMPTY
@@ -21,7 +21,7 @@ class MovableObject():
 
   def occupy_vertex_container(self, vertex):
     """
-    Changes the state of the vertex, when the agent enters it with the container.
+    Changes the state of the vertex, when the agent enters it with the container
     """
     if vertex.occupied == vertex.EMPTY:
       vertex.occupied = vertex.AGENT_CONTAINER

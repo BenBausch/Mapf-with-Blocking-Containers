@@ -26,7 +26,8 @@ class Container(MovableObject):
 
   def move_agent(self, agent, vertex):
     """
-    Moves the container at the current position of the agent and the agent itself to an adjacent vertex.
+    Moves the container at the current position of the agent and the agent
+    itself to an adjacent vertex.
     """
     if vertex in agent.pos.adjacency:
       if vertex.occupied == vertex.EMPTY or vertex.occupied == vertex.CONTAINER:
@@ -40,6 +41,7 @@ class Container(MovableObject):
 
   def wait(self):
     """
-    This action will make the agent wait at its current position for one time step.
+    This action will make the agent wait at its current position for one
+    time step.
     """
     pass

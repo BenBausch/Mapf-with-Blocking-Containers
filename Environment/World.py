@@ -11,7 +11,7 @@ for i in range(G.xdim):
     node = G.nodes[j][i]
     print(str(node) + " is " + str(node.occupied))
 
-print("--------------------------------------------------------------------------------------")
+print("-----------------------------------------------------------------------")
 print(str(G))
 
 
@@ -27,7 +27,7 @@ for i in range(G.xdim):
     print(str(node) + " is " + str(node.occupied))
 
 
-print("--------------------------------------------------------------------------------------")
+print("-----------------------------------------------------------------------")
 
 print("Heuristic: " + str(dir_dist(G.nodes[0][1], G.nodes[1][2])))
 
@@ -39,7 +39,7 @@ print("Heuristic: " + str(dir_dist(G.nodes[0][1], G.nodes[1][2])))
 
 #C1.move_agent(A1, G.nodes[1][2])
 
-for i in Astar(dir_dist, G, A1).find_path():
+for i in Astar(dir_dist, A1).find_path():
   print(str(i[0])+ "with heuristic: "+ str(i[1]))#str(dir_dist(i, A1.goal)))
 
 """
@@ -48,5 +48,5 @@ for i in range(G.xdim):
     node = G.nodes[j][i]
     print(str(node) + " is " + str(node.occupied))
 
-print("--------------------------------------------------------------------------------------")
+print("-----------------------------------------------------------------------")
 print(str(G))"""
