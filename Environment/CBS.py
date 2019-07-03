@@ -1,9 +1,9 @@
 from collections import defaultdict
+from copy import copy
 
 class CbsNode():
 
-  def __init__(self, parent, constrains, num_constrains):
-    self.parent = parent
+  def __init__(self, constrains, num_constrains):
     self.constrains = constrains
     self.num_constrains = num_constrains
     self.solution = []
@@ -27,7 +27,7 @@ class Cbs():
     self.h = heuristic
 
   def find_solution():
-    constrains = defaultdict()
+    constrains = defaultdict{}
     open_list = []
     root = CbsNode(None, constrains, 0)
     root.find_solution(self.agents, self.h, self.ll)
@@ -35,8 +35,15 @@ class Cbs():
     open_list.append(root)
     while len(open_list) > 0:
       best_node = self.get_best_node(open_list)
-      conflict = sefl
-
+      conflict = self.find_conflict(best_node)
+      #if no Conflict is found, we found the optimal solution
+      if conflict is None:
+        retrun best_node.solution
+      else:
+        #create a new node for each agent involved in the conflict
+        for agent in conflict[0]:
+          new_node= CbsNode()
+          #TODO finish this
 
   def get_best_node(self, open_list):
     """
@@ -57,7 +64,7 @@ class Cbs():
     return best_node
 
 
-  def find_first_conflict(self, node):
+  def find_conflict(self, node):
     """
     Find the first conflict between two single-agent paths.
     Even if more then two agents are involved in a conflict, the conflict is set
@@ -78,19 +85,26 @@ class Cbs():
             pass
           else:
             return conflict
+    #return None if no Conflict is found
+    return None
 
 
-    def find_conflict_in_2_paths(self, path1, path2, a1, a2):
-      """
-      Returns the first conflict between two single-agent paths.
-      """
-      #the time in which collisions can occure between two agent paths
-      #corresponds to the length of the shortest path
-      pc_time = len(path1) if len(path1) < len(path2) else len(path2)
-      #find collisions
-      for t in range(pc_time):
-        if is_agent_vertex_conflict(path1[t], path2[t]):
-          return (a1, a2, path1[t], t)
-        elif t < len(pc_time)-1 and \
-        is_swapping_conflict(path1[t], path2[t], path1[t+1], path2[t+1]):
-          return (a1, a2, path1[t], path1[t+1], t)
+  def find_conflict_in_2_paths(self, path1, path2, a1, a2):
+    """
+    Returns the first conflict between two single-agent paths.
+    """
+    #the time in which collisions can occure between two agent paths
+    #corresponds to the length of the shortest path
+    pc_time = len(path1) if len(path1) < len(path2) else len(path2)
+
+    #find conflicts between the 2 paths
+    for t in range(pc_time):
+      if is_agent_vertex_conflict(path1[t], path2[t]):
+        return [[a1, a2], [path1[t]], t] #vertex conflict
+
+      elif t < len(pc_time)-1 and \
+      is_swapping_conflict(path1[t], path2[t], path1[t+1], path2[t+1]):
+        return [[a1, a2], [path1[t], path1[t+1]], t] #edge conflict
+
+    #returns None if no Conflict has been found
+    return None
