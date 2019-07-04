@@ -10,6 +10,10 @@ class CbsNode():
         self.num_constrains = num_constrains
         self.solution = []
         self.cost = 0
+        print("New Node Generated with following constrains:")
+        for k, v in constrains.items():
+            print(k)
+
 
     def find_solution(self, agents, heuristic, low_level):
         for agent in agents:
@@ -31,7 +35,7 @@ class CbsNode():
 class Cbs():
 
     def __init__(self, agents, graph, low_level, heuristic):
-        self.agents = agents 
+        self.agents = agents
         self.graph = graph
         self.ll = low_level
         self.h = heuristic
@@ -55,8 +59,8 @@ class Cbs():
                 for agent_num in conflict[0]:
                     # hard copy of constrains for efficent use in low_level
                     new_constrains = copy(constrains)
-                    #self.agents[agent] return the actual agent instance at 
-                    #position agent in the agents list 
+                    #self.agents[agent] return the actual agent instance at
+                    #position agent in the agents list
                     new_constrains[(self.agents[agent_num], conflict[1][0],
                                     conflict[1][1], conflict[2])] = 1
                     # create new node

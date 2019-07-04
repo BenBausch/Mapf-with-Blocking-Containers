@@ -67,9 +67,9 @@ class Astar():
                 path = []
                 node = best_node
                 while node.parent is not None:
-                    path.append((node.vertex, node.f))
+                    path.append(node.vertex)
                     node = node.parent
-                path.append((node.vertex, node.f))
+                path.append(node.vertex)
                 return path[::-1]
 
             # expand the node if the node is not the goal and afterwards add to node
@@ -125,11 +125,11 @@ class Astar():
                 n,
                 node.time + 1)
             if not(self.check_already_opened(n, closed_list)):
-                if self.check_consistency(node.vertex, n, node.time): 
+                if self.check_consistency(node.vertex, n, node.time):
                   open_list.append(A)
                   closed_list.append(n)
                   #print(str(n) + " has been added to the CLOSED")
-    
+
 
     def check_consistency(self, vertex1, vertex2, time_step):
         """
@@ -138,6 +138,7 @@ class Astar():
         try:
             #check for swapping edge constraint
             if self.constrains[(self.agent, vertex1, vertex2, time_step)] == 1:
+                print("no edge constraint for agent" + str(self.agent) + " on " + str(vertex1) + "and" + str(vertex2) + "in time step" + str(t))
                 return False
         except:
             pass

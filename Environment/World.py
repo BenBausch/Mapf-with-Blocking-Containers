@@ -28,7 +28,7 @@ low_level = Astar
 for agent, path in enumerate(Cbs(agents, G, low_level, dir_dist).find_solution()):
     print("Agent " + str(agent) + ":")
     for step in path:
-        print(str(step[0]) + " --> ", end="")
+        print(str(step) + " --> ", end="")
 
 
 
