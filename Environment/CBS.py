@@ -1,5 +1,6 @@
 from collections import defaultdict
 from copy import copy
+from conflicts import *
 
 
 class CbsNode():
@@ -22,7 +23,7 @@ class CbsNode():
         for single_solution in self.solution:
             self.cost += len(single_solution)
 
-    def update_solution(self, agent_num):
+    def update_solution(self, agent_num, low_level, heuristic, agent):
         self.solution[agent_num] = low_level(
             heuristic, agent, self.constrains).find_path()
 
@@ -35,10 +36,10 @@ class Cbs():
         self.ll = low_level
         self.h = heuristic
 
-    def find_solution():
-        constrains = defaultdict{}
+    def find_solution(self):
+        constrains = defaultdict()
         open_list = []
-        root = CbsNode(None, constrains, 0)
+        root = CbsNode(constrains, 0)
         root.find_solution(self.agents, self.h, self.ll)
         root.SIC()
         open_list.append(root)
@@ -51,18 +52,18 @@ class Cbs():
                 return best_node.solution
             else:
                 # create a new node for each agent involved in the conflict
-                for agent in conflict[0]:
+                for agent_num in conflict[0]:
                     # hard copy of constrains for efficent use in low_level
                     new_constrains = copy(constrains)
                     #self.agents[agent] return the actual agent instance at 
                     #position agent in the agents list 
-                    new_constrains[(self.agents[agent], conflict[1][0],
+                    new_constrains[(self.agents[agent_num], conflict[1][0],
                                     conflict[1][1], conflict[2])] = 1
                     # create new node
                     new_node = CbsNode(
                         new_constrains, best_node.num_constrains + 1)
                     new_node.solution = copy(best_node.solution)
-                    new_node.update_solution(agent)
+                    new_node.update_solution(agent_num, self.ll, self.h, self.agents[agent_num])
                     new_node.SIC()
                     open_list.append(new_node)
 
@@ -126,9 +127,9 @@ class Cbs():
             if is_agent_vertex_conflict(path1[t], path2[t]):
                 return [[a1, a2], [None, path1[t]], t]  # vertex conflict
 
-            elif t < pc_time-1 and \
-                    is_swapping_conflict(path1[t], path2[t], path1[t+1], path2[t+1]):
-                return [[a1, a2], [path1[t], path1[t+1]], t]  # edge conflict
+            elif t > 1 and \
+                    is_swapping_conflict(path1[t-1], path2[t-1], path1[t], path2[t]):
+                return [[a1, a2], [path1[t-1], path1[t]], t-1]  # edge conflict
 
         # returns None if no Conflict has been found
         return None

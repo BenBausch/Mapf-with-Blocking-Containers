@@ -2,7 +2,6 @@
 Author : Ben Bausch <benbausch@gmail.com>
 Copyrigth Ben Bausch 2019
 """
-from termcolor import colored
 from collections import defaultdict
 from Heuristic import *
 
@@ -34,7 +33,7 @@ class Astar():
     Astar algorithmen for single-Agent planning.
     """
 
-    def __init__(self, heuristic, agent, contrains):
+    def __init__(self, heuristic, agent, constrains):
         self.agent = agent
         self.h = heuristic
         self.constrains = constrains
@@ -126,15 +125,29 @@ class Astar():
                 n,
                 node.time + 1)
             if not(self.check_already_opened(n, closed_list)):
-                if check_consistency(node.vertex, n, node.time): 
+                if self.check_consistency(node.vertex, n, node.time): 
                   open_list.append(A)
                   closed_list.append(n)
                   #print(str(n) + " has been added to the CLOSED")
     
 
     def check_consistency(self, vertex1, vertex2, time_step):
-
-
+        """
+        Checks if the expansion of the vertex2 is a valid move given the the Constrains of CBS.
+        """
+        try:
+            #check for swapping edge constraint
+            if self.constrains[(self.agent, vertex1, vertex2, time_step)] == 1:
+                return False
+        except:
+            pass
+        try:
+            #check for vertex constraint
+            if self.constrains[(self.agent, None, vertex2, time_step)] == 1:
+                return False
+        except KeyError:
+            #no matching constraint has been found
+            return True
 
     def check_already_opened(self, n, closed_list):
         """
