@@ -7,9 +7,9 @@ class Agent(MovableObject):
 
     number_agents = 0
 
-    def __init__(self, num, vertex, goal):
+    def __init__(self, num, vertex):
         Agent.number_agents += 1
-        super().__init__(num, vertex, goal)
+        super().__init__(num, vertex)
 
     #------------------------------------------------Actions------------------
 

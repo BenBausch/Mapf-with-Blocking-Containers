@@ -3,10 +3,9 @@ from Node import *
 
 class MovableObject():
 
-    def __init__(self, num, vertex, goal):
+    def __init__(self, num, vertex):
         self.num = num
         self.pos = vertex
-        self.goal = goal
 
     #-----------------------------------------------Helper Functions----------
 

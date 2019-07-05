@@ -4,8 +4,10 @@ from Container import *
 from Heuristic import *
 from Astar import *
 from CBS import *
+from Problem import *
 
 G = Graph(10, 9)
+G1 = Graph(3, 1)
 
 for i in range(G.xdim):
     for j in range(G.ydim):
@@ -14,22 +16,33 @@ for i in range(G.xdim):
 
 print("-----------------------------------------------------------------------")
 print(str(G))
+print("-----------------------------------------------------------------------")
 
+A1 = Agent(0, G.nodes[0][0])
+A2 = Agent(1, G.nodes[1][0])
 
-A1 = Agent(0, G.nodes[0][0], G.nodes[0][7])
-A2 = Agent(1, G.nodes[1][0], G.nodes[1][7])
-A3 = Agent(2, G.nodes[0][1], G.nodes[7][1])
+a_starts= [G.nodes[0][0], G.nodes[1][0]]
+c_starts= [G.nodes[1][1]]
+c_goals= [G.nodes[1][6]]
+
+p1 = Problem(10, 9, a_starts, c_starts, c_goals)
+print(p1)
+
+#A3 = Agent(2, G.nodes[0][1], G.nodes[7][1])
 #C1 = Container(1, G.nodes[1][1], G.nodes[1][1])
 #G.nodes[1][1].occupied = 3
 
-agents = [A1,A2, A3]
+#A1 = Agent(0, G1.nodes[0][0], G1.nodes[0][2])
+#A2 = Agent(1, G1.nodes[0][2], G1.nodes[0][0])
+"""
+agents = [A1,A2]
 low_level = Astar
 
 for agent, path in enumerate(Cbs(agents, G, low_level, dir_dist).find_solution()):
     print("Agent " + str(agent) + ":")
     for step in path:
         print(str(step) + " --> ", end="")
-
+"""
 
 
 

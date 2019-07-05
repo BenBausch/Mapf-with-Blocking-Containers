@@ -115,6 +115,14 @@ class Astar():
         closed_list: list of nodes, that have been expaneded and should not be
         opened again
         """
+        #determin which nodes should be opened depending on the action of the agent
+        #nodes_to_open = []
+        #for the the move action
+        #for v in node.vertex.adjacency:
+        #    nodes_to_open.append(v)
+        #for the wait action
+        #nodes_to_open.append(node.vertex)
+        #create serch nodes
         for n in node.vertex.adjacency:
             A = AstarNode(
                 node,
@@ -125,10 +133,12 @@ class Astar():
                 n,
                 node.time + 1)
             if not(self.check_already_opened(n, closed_list)):
-                if self.check_consistency(node.vertex, n, node.time):
+                print("checking nodes " +  str(node.vertex) + " and " +str(n) + "at time step " + str(node.time + 1))
+                if self.check_consistency(node.vertex, n, node.time + 1):
                   open_list.append(A)
-                  closed_list.append(n)
-                  #print(str(n) + " has been added to the CLOSED")
+                  print(str(n) + " added to OPEN")
+        closed_list.append(node.vertex)
+        print(str(node.vertex) + " has been added to the CLOSED")
 
 
     def check_consistency(self, vertex1, vertex2, time_step):
@@ -138,16 +148,18 @@ class Astar():
         try:
             #check for swapping edge constraint
             if self.constrains[(self.agent, vertex1, vertex2, time_step)] == 1:
-                print("no edge constraint for agent" + str(self.agent) + " on " + str(vertex1) + "and" + str(vertex2) + "in time step" + str(t))
+                print("edge constraint for agent" + str(self.agent) + " on " + str(vertex1) + "and" + str(vertex2) + "in time step" + str(time_step))
                 return False
-        except:
+        except KeyError:
             pass
         try:
             #check for vertex constraint
             if self.constrains[(self.agent, None, vertex2, time_step)] == 1:
+                print("vertex constraint for agent" + str(self.agent) + " on " + str(vertex2) + "in time step" + str(time_step))
                 return False
         except KeyError:
             #no matching constraint has been found
+            print("no constrains found")
             return True
 
     def check_already_opened(self, n, closed_list):
@@ -158,6 +170,6 @@ class Astar():
         opened again
         """
         for v in closed_list:
-            if n.id == v.id:
+            if n.id == v.id :
                 #print(n.id + " and " + v.id)
                 return True

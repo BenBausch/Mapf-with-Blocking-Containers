@@ -9,7 +9,8 @@ class Container(MovableObject):
 
     def __init__(self, num, vertex, goal):
         Container.number_containers += 1
-        super().__init__(num, vertex, goal)
+        self.goal = goal
+        super().__init__(num, vertex)
 
     def move(self, agent, vertex):
         """
@@ -45,3 +46,6 @@ class Container(MovableObject):
         time step.
         """
         pass
+
+    def __repr__(self):
+        return str(self.num)
