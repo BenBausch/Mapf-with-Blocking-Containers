@@ -11,6 +11,6 @@ This repository is still work in progress and should be finished at the end of a
 #Installing the required modules
 
 Pls change your directory to the MAPF-with-Blocking-Containers directory and execute the following command: 
-'''
+```
 pip3 install -r requirements.txt 
-'''
+```
