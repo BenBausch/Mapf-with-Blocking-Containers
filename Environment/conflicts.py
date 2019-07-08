@@ -1,12 +1,12 @@
 def is_agent_vertex_conflict(vertex1, vertex2):
+    """
+    Returns true if two nodes are the same. This can be the positions of two 
+    agents or two containers. The formulation is the same.
+    """
     if vertex1 == vertex2:
         return True
     else:
         return False
-
-
-def is_container_vertex_conflict():
-    pass
 
 
 def is_swapping_conflict(vertex1, vertex2, vertex1_prim, vertex2_prim):

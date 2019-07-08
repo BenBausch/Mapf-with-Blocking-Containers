@@ -33,12 +33,16 @@ class Astar():
     Astar algorithmen for single-Agent planning.
     """
 
-    def __init__(self, heuristic, agent, constrains):
+    def __init__(self, heuristic, agent, constrains, goal, start, start_time)
+        """
+
+        """
         self.agent = agent
         self.h = heuristic
         self.constrains = constrains
-        self.goal = agent.goal
-        self.start = agent.pos
+        self.goal = goal
+        self.start = start
+        self.start_time = start_time
 
     def find_path(self):
         """
@@ -52,7 +56,7 @@ class Astar():
                 self.start,
                 self.goal),
             self.start,
-            0)
+            self.start_time)
         open_list = [start]
         closed_list = []
 
@@ -116,14 +120,14 @@ class Astar():
         opened again
         """
         #determin which nodes should be opened depending on the action of the agent
-        #nodes_to_open = []
+        nodes_to_open = []
         #for the the move action
-        #for v in node.vertex.adjacency:
-        #    nodes_to_open.append(v)
+        for v in node.vertex.adjacency:
+            nodes_to_open.append(v)
         #for the wait action
-        #nodes_to_open.append(node.vertex)
+        nodes_to_open.append(node.vertex)
         #create serch nodes
-        for n in node.vertex.adjacency:
+        for n in nodes_to_open:
             A = AstarNode(
                 node,
                 node.g + 1,
@@ -132,13 +136,13 @@ class Astar():
                     self.goal),
                 n,
                 node.time + 1)
-            if not(self.check_already_opened(n, closed_list)):
-                print("checking nodes " +  str(node.vertex) + " and " +str(n) + "at time step " + str(node.time + 1))
-                if self.check_consistency(node.vertex, n, node.time + 1):
-                  open_list.append(A)
-                  print(str(n) + " added to OPEN")
-        closed_list.append(node.vertex)
-        print(str(node.vertex) + " has been added to the CLOSED")
+            #if not(self.check_already_opened(n, closed_list)):
+            print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
+            if self.check_consistency(node.vertex, n, node.time + 1):
+                open_list.append(A)
+                print(str(n) + " added to OPEN")
+        #closed_list.append((node.vertex, node.time))
+        #print(str(node.vertex) + " has been added to the CLOSED")
 
 
     def check_consistency(self, vertex1, vertex2, time_step):
@@ -170,6 +174,6 @@ class Astar():
         opened again
         """
         for v in closed_list:
-            if n.id == v.id :
+            if n.id == v.id:
                 #print(n.id + " and " + v.id)
                 return True

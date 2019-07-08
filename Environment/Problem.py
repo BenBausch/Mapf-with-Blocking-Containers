@@ -19,8 +19,8 @@ class Problem():
         for agent_num, start_pos in enumerate(a_s):
             self.agents.append(Agent(agent_num, start_pos))
         #create all the number_containers
+        self.containers = []
         if len(c_s) == len(c_g):
-            self.containers = []
             for i in range(len(c_s)):
                 self.containers = [Container(i, c_s[i], c_g[i])]
 
