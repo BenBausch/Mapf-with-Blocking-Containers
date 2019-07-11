@@ -16,21 +16,44 @@ class CA_CbsNode():
 
 
     def find_solution(self, agents, heuristic, low_level, assignment):
+        #find a path for each agent
         for agent in agents:
             targets = assignment[agent]
-            self.solution.append(
-                low_level(
+            sol = low_level(
                     agent,
                     container,
-                    self.constrains).find_path())
+                    self.constrains).find_path()
+            #if for one agent no path is found, their can be no solution
+            #with the current constrains, not to mention with even more
+            #constrains
+            if not(sol is None):
+                self.solution.append(sol)
+            else:
+                return None
+
 
     def SIC(self):
+        """
+        Returns the sum over all cost for all the agents. This method only works
+        for unit cost of 1 per action.
+        """
         for single_solution in self.solution:
             self.cost += len(single_solution)
 
     def update_solution(self, agent_num, low_level, heuristic, agent):
-        self.solution[agent_num] = low_level(
-            heuristic, agent, self.constrains).find_path()
+        #update the path of an agent, if a container or a vertex constraint
+        #exist for that agent
+        path = low_level(heuristic, agent, self.constrains).find_path()
+        #if the no path been found, their is no solution with the current
+        #constrains, not to mention with even more constrains
+        if not(path is None):
+            #successfully found a path
+            self.solution[agent_num] = path
+            return True
+        else:
+            #no path found
+            self.solution = None
+            return False
 
 
 class C_Cbs():
@@ -128,18 +151,43 @@ class C_Cbs():
         """
         Returns the first conflict between two single-agent paths.
         """
-        # the time in which collisions can occure between two agent paths
-        # corresponds to the length of the shortest path
-        pc_time = len(path1) if len(path1) < len(path2) else len(path2)
+        #we consider the agent to stays at the goal position after reaching it
+        if len(path1) < len(path2):
+            time = len(path2)
+            #save the shortest path, to continue conflict checking
+            longest_path = path2
+            shortest_path = path1
+        else:
+            time = len(path1)
+            #save the shortest path, to continue conflict checking
+            longest_path = path1
+            shortest_path = path2
 
-        # find conflicts between the 2 paths
-        for t in range(pc_time):
-            if is_agent_vertex_conflict(path1[t], path2[t]):
-                return [[a1, a2], [None, path1[t]], t]  # vertex conflict
-
-            elif t > 1 and \
-                    is_swapping_conflict(path1[t-1], path2[t-1], path1[t], path2[t]):
-                return [[a1, a2], [path1[t-1], path1[t]], t-1]  # edge conflict
+        #get the inital position of the containers, by looking at which
+        #container has been assigned to the agent with number ai.
+        c1 = self.assignment[self.agent[a1]].pos
+        c2 = self.assignment[self.agent[a2]].pos
+        #check the paths for conflicts at each time_step
+        for t in range(time):
+            #get the two path steps at time step t, which have the following
+            #format (vertex, agent, container)
+            if t < len(shortest):
+                #if the end of neither path, consider the next steps
+                #the shorest_path agent has not yet reached its goal.
+                step_a = longest_path[t]
+                step_b = shortest_path[t]
+                #try to change any of the paths
+                add_2_nodes = True
+            else:
+                #if the shorest_path agent has reached its goal,
+                #he and his agent will stay at the goal position
+                step_a = longest_path[t]
+                step_b = shortest_path[:-1]
+                #try to change the path of the agent, which has not yet reached
+                #is goal state, the other will not move after reaching its goal
+                add_2_nodes = False
+            #check for agent vertex conflicts
+            if 
 
         # returns None if no Conflict has been found
         return None

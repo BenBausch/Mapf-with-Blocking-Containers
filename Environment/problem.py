@@ -1,10 +1,10 @@
-from Graph import *
-from Agent import *
+from graph import *
+from agent import *
 from termcolor import colored
 
 class Problem():
 
-    def __init__(self, xdim, ydim, a_s, c_s, c_g):
+    def __init__(self, graph, a_s, c_s, c_g):
         """
         Generates a problem instanceself.
         xdim : x dimension of the graph / environment
@@ -13,7 +13,7 @@ class Problem():
         c_s: list of start position for each container
         c_g: list of goal position for each container
         """
-        self.graph = Graph(xdim, ydim)
+        self.graph = graph
         #create all the agents
         self.agents = []
         for agent_num, start_pos in enumerate(a_s):

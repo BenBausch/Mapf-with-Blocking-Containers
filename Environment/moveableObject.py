@@ -1,4 +1,4 @@
-from Node import *
+from node import *
 
 
 class MovableObject():

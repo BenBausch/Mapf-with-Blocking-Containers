@@ -3,7 +3,7 @@ Author : Ben Bausch <benbausch@gmail.com>
 Copyrigth Ben Bausch 2019
 """
 from collections import defaultdict
-from Heuristic import *
+from heuristic import *
 
 
 class AstarNode():
@@ -138,10 +138,10 @@ class Astar():
                 n,
                 node.time + 1)
             #if not(self.check_already_opened(n, closed_list)):
-            print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
+            #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
             if self.check_consistency(node.vertex, n, node.time + 1):
                 open_list.append(A)
-                print(str(n) + " added to OPEN")
+                #print(str(n) + " added to OPEN")
         #closed_list.append((node.vertex, node.time))
         #print(str(node.vertex) + " has been added to the CLOSED")
 
@@ -153,18 +153,18 @@ class Astar():
         try:
             #check for swapping edge constraint
             if self.constrains[(self.agent, vertex1, vertex2, time_step)] == 1:
-                print("edge constraint for agent" + str(self.agent) + " on " + str(vertex1) + "and" + str(vertex2) + "in time step" + str(time_step))
+                #print("edge constraint for agent" + str(self.agent) + " on " + str(vertex1) + "and" + str(vertex2) + "in time step" + str(time_step))
                 return False
         except KeyError:
             pass
         try:
             #check for vertex constraint
             if self.constrains[(self.agent, None, vertex2, time_step)] == 1:
-                print("vertex constraint for agent" + str(self.agent) + " on " + str(vertex2) + "in time step" + str(time_step))
+                #print("vertex constraint for agent" + str(self.agent) + " on " + str(vertex2) + "in time step" + str(time_step))
                 return False
         except KeyError:
             #no matching constraint has been found
-            print("no constrains found")
+            #print("no constrains found")
             return True
 
     def check_already_opened(self, n, closed_list):
