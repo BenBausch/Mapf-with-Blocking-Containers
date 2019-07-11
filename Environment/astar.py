@@ -33,11 +33,12 @@ class Astar():
     Astar algorithmen for single-Agent planning.
     """
 
-    def __init__(self, heuristic, agent, constrains, goal, start, start_time)
+    def __init__(self, heuristic, agent, container, constrains, goal, start, start_time):
         """
 
         """
         self.agent = agent
+        self.container = container
         self.h = heuristic
         self.constrains = constrains
         self.goal = goal

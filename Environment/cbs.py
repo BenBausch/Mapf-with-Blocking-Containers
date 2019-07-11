@@ -34,7 +34,7 @@ class CbsNode():
 
 class Cbs():
 
-    def __init__(self, agents, graph, low_level, heuristic):
+    def __init__(self, agents, zzgraph, low_level, heuristic):
         self.agents = agents
         self.graph = graph
         self.ll = low_level

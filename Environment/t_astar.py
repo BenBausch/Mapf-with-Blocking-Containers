@@ -1,8 +1,8 @@
-from Astar import * 
+from Astar import *
 
 class TAstar():
 
-    def __init__(self, agent, container, heuristic):
+    def __init__(self, agent, container, heuristic, constrains):
         """
         agent: is the agent, for which we search the shortest path to bring its container to
           its goal location
@@ -16,6 +16,7 @@ class TAstar():
         #the goal, which have to be reached in the given order
         self.goals = [container.start, container.goal]
         self.h = heuristic
+        self.constrains = constrains
 
 
     def find_path(self):
@@ -27,9 +28,9 @@ class TAstar():
         #else agent move with container (second target)
         pp_cponter = 1
         for g in goals:
-            sub_path = Astar(self.h, self.agent, self.container, g, new_start, start_time)
+            sub_path = Astar(self.h, self.agent, self.container, self.constrains, g, new_start, start_time)
             start_time = len(sub_path)
-            #to the first target the agent moves alone, to the second target, the agent 
+            #to the first target the agent moves alone, to the second target, the agent
             #moves with the container. This needs to be safe, to check on conflicts later on.
             if pp_counter == 1:
                 #agent moves alone
@@ -39,4 +40,4 @@ class TAstar():
                 #agent moves with container
                 for step in sub_path:
                     path.append((step, agent, container))
-        return path  
+        return path
