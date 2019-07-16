@@ -33,12 +33,22 @@ class Astar():
     Astar algorithmen for single-Agent planning.
     """
 
-    def __init__(self, heuristic, agent, container, constrains, goal, start, start_time):
+    def __init__(
+            self,
+            heuristic,
+            agent,
+            container,
+            loaded,
+            constrains,
+            goal,
+            start,
+            start_time):
         """
 
         """
         self.agent = agent
         self.container = container
+        self.loaded = loaded
         self.h = heuristic
         self.constrains = constrains
         self.goal = goal
@@ -120,14 +130,15 @@ class Astar():
         closed_list: list of nodes, that have been expaneded and should not be
         opened again
         """
-        #determin which nodes should be opened depending on the action of the agent
+        # determin which nodes should be opened depending on the action of the
+        # agent
         nodes_to_open = []
-        #for the the move action
+        # for the the move action
         for v in node.vertex.adjacency:
             nodes_to_open.append(v)
-        #for the wait action
+        # for the wait action
         nodes_to_open.append(node.vertex)
-        #create serch nodes
+        # create serch nodes
         for n in nodes_to_open:
             A = AstarNode(
                 node,
@@ -137,12 +148,12 @@ class Astar():
                     self.goal),
                 n,
                 node.time + 1)
-            #if not(self.check_already_opened(n, closed_list)):
-            #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
-            if self.check_consistency(node.vertex, n, node.time + 1):
-                open_list.append(A)
-                #print(str(n) + " added to OPEN")
-        #closed_list.append((node.vertex, node.time))
+            if not(self.check_already_opened(A, closed_list)):
+                #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
+                if self.check_consistency(node.vertex, n, node.time + 1):
+                    open_list.append(A)
+                    #print(str(n) + " added to OPEN")
+        closed_list.append(node)
         #print(str(node.vertex) + " has been added to the CLOSED")
 
 
@@ -150,21 +161,31 @@ class Astar():
         """
         Checks if the expansion of the vertex2 is a valid move given the the Constrains of CBS.
         """
+        # check for swapping edge constraint
         try:
-            #check for swapping edge constraint
             if self.constrains[(self.agent, vertex1, vertex2, time_step)] == 1:
                 #print("edge constraint for agent" + str(self.agent) + " on " + str(vertex1) + "and" + str(vertex2) + "in time step" + str(time_step))
                 return False
         except KeyError:
             pass
+        # check for vertex constraint
         try:
-            #check for vertex constraint
-            if self.constrains[(self.agent, None, vertex2, time_step)] == 1:
+            if self.constrains[(self.agent, vertex2, time_step)] == 1:
                 #print("vertex constraint for agent" + str(self.agent) + " on " + str(vertex2) + "in time step" + str(time_step))
                 return False
         except KeyError:
-            #no matching constraint has been found
+            # no matching constraint has been found
             #print("no constrains found")
+            pass
+        if self.loaded:
+        # check for container constrains, if loaded
+            try:
+                if self.constrains[(self.agent, self.container, vertex2, time_step)] == 1:
+                    #print("edge constraint for agent" + str(self.agent) + " on " + str(vertex1) + "and" + str(vertex2) + "in time step" + str(time_step))
+                    return False
+            except KeyError:
+                return True
+        else:
             return True
 
     def check_already_opened(self, n, closed_list):
@@ -175,6 +196,6 @@ class Astar():
         opened again
         """
         for v in closed_list:
-            if n.id == v.id:
+            if n.vertex.id == v.vertex.id and n.time == v.time:
                 #print(n.id + " and " + v.id)
                 return True

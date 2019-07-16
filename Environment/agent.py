@@ -11,7 +11,7 @@ class Agent(MovableObject):
         Agent.number_agents += 1
         super().__init__(num, vertex)
 
-    #------------------------------------------------Actions------------------
+    # ------------------------------------------------Actions------------------
 
     def move(self, vertex):
         """

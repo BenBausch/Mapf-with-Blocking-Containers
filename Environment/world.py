@@ -5,12 +5,13 @@ from heuristic import *
 from astar import *
 from t_astar import *
 from cbs import *
+from c_cbs import *
 from problem import *
-
+"""
 G = Graph(1, 9)
 G1 = Graph(3, 1)
 
-#for i in range(G.xdim):
+# for i in range(G.xdim):
 #    for j in range(G.ydim):
 #        node = G.nodes[j][i]
 #        print(str(node) + " is " + str(node.occupied))
@@ -23,9 +24,9 @@ print("-----------------------------------------------------------------------")
 A1 = Agent(0, G.nodes[0][0])
 A2 = Agent(1, G.nodes[1][0])
 
-a_starts= [G.nodes[0][0]]
-c_starts= [G.nodes[1][0]]
-c_goals= [G.nodes[8][0]]
+a_starts = [G.nodes[0][0]]
+c_starts = [G.nodes[1][0]]
+c_goals = [G.nodes[8][0]]
 
 p1 = Problem(G, a_starts, c_starts, c_goals)
 print(p1)
@@ -37,20 +38,36 @@ constrains[(a, None, G.nodes[1][0], 1)] = 1
 constrains[(a, None, G.nodes[1][0], 2)] = 1
 constrains[(a, None, G.nodes[1][0], 3)] = 1
 constrains[(a, None, G.nodes[1][0], 4)] = 1
+"""
+
+G = Graph(4,4)
+
+a_starts = [G.nodes[1][0], G.nodes[0][1]]
+c_starts = [G.nodes[1][2], G.nodes[2][1]]
+c_goals = [G.nodes[1][3], G.nodes[3][1]]
+
+p1 = Problem(G, a_starts, c_starts, c_goals)
+print(p1)
+
+assignment = defaultdict()
+assignment[p1.agents[0]] = p1.containers[0]
+assignment[p1.agents[1]] = p1.containers[1]
+
+sol = C_Cbs(p1.agents, p1.containers, assignment, G, TAstar, dir_dist).find_solution()
+
+for path in sol:
+    for step in path:
+        print(str(step) + "-->", end="")
+    print("\n")
 
 
-for step in TAstar(a, c, dir_dist, constrains).find_path():
-    print(step)
-
-
-#for agent, path in enumerate(Cbs(agents, G, low_level, dir_dist).find_solution()):
+# for agent, path in enumerate(Cbs(agents, G, low_level, dir_dist).find_solution()):
 #    print("Agent " + str(agent) + ":")
 #    for step in path:
 #        print(str(step) + " --> ", end="")
 
 
-
-#----------------------------------------Single Agent Target Astar------------------------------
+# ----------------------------------------Single Agent Target Astar-------
 """
 A1 = Agent(0, G.nodes[0][1], G.nodes[7][1])
 

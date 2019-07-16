@@ -14,7 +14,6 @@ class CbsNode():
         for k, v in constrains.items():
             print(k)
 
-
     def find_solution(self, agents, heuristic, low_level):
         for agent in agents:
             self.solution.append(
@@ -59,18 +58,18 @@ class Cbs():
                 for agent_num in conflict[0]:
                     # hard copy of constrains for efficent use in low_level
                     new_constrains = copy(constrains)
-                    #self.agents[agent] return the actual agent instance at
-                    #position agent in the agents list
+                    # self.agents[agent] return the actual agent instance at
+                    # position agent in the agents list
                     new_constrains[(self.agents[agent_num], conflict[1][0],
                                     conflict[1][1], conflict[2])] = 1
                     # create new node
                     new_node = CbsNode(
                         new_constrains, best_node.num_constrains + 1)
                     new_node.solution = copy(best_node.solution)
-                    new_node.update_solution(agent_num, self.ll, self.h, self.agents[agent_num])
+                    new_node.update_solution(
+                        agent_num, self.ll, self.h, self.agents[agent_num])
                     new_node.SIC()
                     open_list.append(new_node)
-
 
     def get_best_node(self, open_list):
         """
@@ -132,8 +131,9 @@ class Cbs():
                 return [[a1, a2], [None, path1[t]], t]  # vertex conflict
 
             elif t > 1 and \
-                    is_swapping_conflict(path1[t-1], path2[t-1], path1[t], path2[t]):
-                return [[a1, a2], [path1[t-1], path1[t]], t-1]  # edge conflict
+                    is_swapping_conflict(path1[t - 1], path2[t - 1], path1[t], path2[t]):
+                # edge conflict
+                return [[a1, a2], [path1[t - 1], path1[t]], t - 1]
 
         # returns None if no Conflict has been found
         return None

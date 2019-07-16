@@ -7,7 +7,7 @@ class MovableObject():
         self.num = num
         self.pos = vertex
 
-    #-----------------------------------------------Helper Functions----------
+    # -----------------------------------------------Helper Functions----------
 
     def clear_vertex_container(self, vertex):
         """
