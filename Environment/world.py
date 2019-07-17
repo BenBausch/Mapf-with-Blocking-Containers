@@ -1,12 +1,19 @@
-from graph import *
-from agent import *
-from container import *
-from heuristic import *
-from astar import *
-from t_astar import *
-from cbs import *
-from c_cbs import *
 from problem import *
+from c_cbs import *
+from cbs import *
+from t_astar import *
+from astar import *
+from heuristic import *
+from container import *
+from agent import *
+from graph import *
+import sys
+sys.path.insert(
+    0,
+    '/home/benimeni/Documents/uniFreiburg/semester6/Mapf-with-Blocking-Containers/Environment/World')
+sys.path.insert(
+    0,
+    '/home/benimeni/Documents/uniFreiburg/semester6/Mapf-with-Blocking-Containers/Environment/Algorithms')
 """
 G = Graph(1, 9)
 G1 = Graph(3, 1)
@@ -40,11 +47,11 @@ constrains[(a, None, G.nodes[1][0], 3)] = 1
 constrains[(a, None, G.nodes[1][0], 4)] = 1
 """
 
-G = Graph(4,4)
+G = Graph(8, 8)
 
-a_starts = [G.nodes[1][0], G.nodes[0][1]]
-c_starts = [G.nodes[1][2], G.nodes[2][1]]
-c_goals = [G.nodes[1][3], G.nodes[3][1]]
+a_starts = [G.nodes[1][0], G.nodes[0][1], G.nodes[2][3], G.nodes[5][6]]
+c_starts = [G.nodes[1][2], G.nodes[2][1], G.nodes[4][4], G.nodes[7][7]]
+c_goals = [G.nodes[1][3], G.nodes[3][1], G.nodes[3][6], G.nodes[6][3]]
 
 p1 = Problem(G, a_starts, c_starts, c_goals)
 print(p1)
@@ -52,8 +59,16 @@ print(p1)
 assignment = defaultdict()
 assignment[p1.agents[0]] = p1.containers[0]
 assignment[p1.agents[1]] = p1.containers[1]
+assignment[p1.agents[2]] = p1.containers[2]
+assignment[p1.agents[3]] = p1.containers[3]
 
-sol = C_Cbs(p1.agents, p1.containers, assignment, G, TAstar, dir_dist).find_solution()
+sol = C_Cbs(
+    p1.agents,
+    p1.containers,
+    assignment,
+    G,
+    TAstar,
+    dir_dist).find_solution()
 
 for path in sol:
     for step in path:

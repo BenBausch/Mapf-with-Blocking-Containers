@@ -39,7 +39,13 @@ class CA_CbsNode():
         for single_solution in self.solution:
             self.cost += len(single_solution)
 
-    def update_solution(self, agent_num, low_level, heuristic, agent, assignment):
+    def update_solution(
+            self,
+            agent_num,
+            low_level,
+            heuristic,
+            agent,
+            assignment):
         # update the path of an agent, if a container or a vertex constraint
         # exist for that agent
         c = assignment[agent]
@@ -123,6 +129,7 @@ class C_Cbs():
             if counter == 4:
                 break
             counter += 1
+
     def get_best_node(self, open_list):
         """
         Finds the node with most promissing cost.

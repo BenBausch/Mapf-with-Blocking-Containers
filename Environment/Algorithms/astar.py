@@ -156,7 +156,6 @@ class Astar():
         closed_list.append(node)
         #print(str(node.vertex) + " has been added to the CLOSED")
 
-
     def check_consistency(self, vertex1, vertex2, time_step):
         """
         Checks if the expansion of the vertex2 is a valid move given the the Constrains of CBS.
@@ -178,9 +177,10 @@ class Astar():
             #print("no constrains found")
             pass
         if self.loaded:
-        # check for container constrains, if loaded
+            # check for container constrains, if loaded
             try:
-                if self.constrains[(self.agent, self.container, vertex2, time_step)] == 1:
+                if self.constrains[(self.agent, self.container,
+                                    vertex2, time_step)] == 1:
                     #print("edge constraint for agent" + str(self.agent) + " on " + str(vertex1) + "and" + str(vertex2) + "in time step" + str(time_step))
                     return False
             except KeyError:
