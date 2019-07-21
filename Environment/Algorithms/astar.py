@@ -43,9 +43,7 @@ class Astar():
             goal,
             start,
             start_time):
-        """
 
-        """
         self.agent = agent
         self.container = container
         self.loaded = loaded
@@ -199,3 +197,4 @@ class Astar():
             if n.vertex.id == v.vertex.id and n.time == v.time:
                 #print(n.id + " and " + v.id)
                 return True
+        return False

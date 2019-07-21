@@ -1,9 +1,10 @@
 from collections import defaultdict
 from copy import copy
 from conflicts import *
+from planningAstar import PAstar
 
 
-class CA_CbsNode():
+class CBP_FCANode():
 
     def __init__(self, constrains, num_constrains):
         self.constrains = constrains
@@ -14,15 +15,11 @@ class CA_CbsNode():
         for k, v in constrains.items():
             print(str(k) + " , ")
 
-    def find_solution(self, agents, heuristic, low_level, assignment):
+    def find_solution(self, agents, heuristic, assignment):
         # find a path for each agent
         for agent in agents:
-            target = assignment[agent]
-            path = low_level(
-                agent,
-                target,
-                heuristic,
-                self.constrains).find_path()
+            containers = assignment[agent]
+            path = PAstar(heuristic, agent, containers, self.constrains).find_path()
             # if for one agent no path is found, their can be no solution
             # with the current constrains, not to mention with even more
             # constrains
@@ -43,14 +40,13 @@ class CA_CbsNode():
     def update_solution(
             self,
             agent_num,
-            low_level,
             heuristic,
             agent,
             assignment):
         # update the path of an agent, if a container or a vertex constraint
         # exist for that agent
-        c = assignment[agent]
-        path = low_level(agent, c, heuristic, self.constrains).find_path()
+        containers = assignment[agent]
+        path = PAstar(heuristic, agent, containers, self.constrains).find_path()
         # if the no path been found, their is no solution with the current
         # constrains, not to mention with even more constrains
         if not(path is None):
@@ -63,7 +59,7 @@ class CA_CbsNode():
         return True
 
 
-class C_Cbs():
+class CBP_FCA():
 
     def __init__(
             self,
@@ -86,8 +82,8 @@ class C_Cbs():
     def find_solution(self):
         constrains = defaultdict()
         open_list = []
-        root = CA_CbsNode(constrains, 0)
-        success = root.find_solution(self.agents, self.h, self.ll, self.assignment)
+        root = CBP_FCANode(constrains, 0)
+        success = root.find_solution(self.agents, self.h, self.assignment)
         if not(success):
             return None
         root.SIC()
@@ -108,12 +104,12 @@ class C_Cbs():
                     # position agent in the agents list
                     new_constrains[c] = 1
                     # create new node
-                    new_node = CA_CbsNode(
+                    new_node = CBP_FCANode(
                         new_constrains, best_node.num_constrains + 1)
                     new_node.solution = copy(best_node.solution)
                     success = new_node.update_solution(
-                        self.agents.index(
-                            c[0]), self.ll, self.h, c[0], self.assignment)
+                        self.agents.index(c[0]),
+                        self.h, c[0], self.assignment)
                     print("Solution is : ")
                     for i, path in enumerate(new_node.solution):
                         print(str(i) + " : ", end="")
@@ -126,7 +122,6 @@ class C_Cbs():
                     print("The node cost is: " + str(new_node.cost))
                     open_list.append(new_node)
                     print("nodes in open: " + str(len(open_list)))
-        return None
 
 
     def get_best_node(self, open_list):

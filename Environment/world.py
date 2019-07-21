@@ -1,3 +1,13 @@
+import sys
+sys.path.insert(
+    0,
+    '/home/benimeni/Documents/uniFreiburg/semester6/Mapf-with-Blocking-Containers/Environment/World')
+sys.path.insert(
+    0,
+    '/home/benimeni/Documents/uniFreiburg/semester6/Mapf-with-Blocking-Containers/Environment/Algorithms')
+sys.path.insert(
+    0,
+    '/home/benimeni/Documents/uniFreiburg/semester6/Mapf-with-Blocking-Containers/Environment/Algorithms/ClassicalMapf')
 from problem import *
 from c_cbs import *
 from cbs import *
@@ -7,13 +17,7 @@ from heuristic import *
 from container import *
 from agent import *
 from graph import *
-import sys
-sys.path.insert(
-    0,
-    '/home/benimeni/Documents/uniFreiburg/semester6/Mapf-with-Blocking-Containers/Environment/World')
-sys.path.insert(
-    0,
-    '/home/benimeni/Documents/uniFreiburg/semester6/Mapf-with-Blocking-Containers/Environment/Algorithms')
+
 """
 G = Graph(1, 9)
 G1 = Graph(3, 1)
