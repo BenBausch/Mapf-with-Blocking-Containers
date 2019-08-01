@@ -16,15 +16,16 @@ class CBP_FCANode():
             print(str(k) + " , ")
 
     def find_solution(self, agents, heuristic, assignment):
-        # find a path for each agent
+        # find a plan for each agent
         for agent in agents:
             containers = assignment[agent]
-            path = PAstar(heuristic, agent, containers, self.constrains).find_path()
-            # if for one agent no path is found, their can be no solution
+            print("searching for agent :" + str(agent.num))
+            plan = PAstar(heuristic, agent, containers, self.constrains).find_plan()
+            # if for one agent no plan is found, their can be no solution
             # with the current constrains, not to mention with even more
             # constrains
-            if not(path is None):
-                self.solution.append(path)
+            if not(plan is None):
+                self.solution.append(plan)
             else:
                 return False
         return True
@@ -43,17 +44,17 @@ class CBP_FCANode():
             heuristic,
             agent,
             assignment):
-        # update the path of an agent, if a container or a vertex constraint
+        # update the plan of an agent, if a container or a vertex constraint
         # exist for that agent
         containers = assignment[agent]
-        path = PAstar(heuristic, agent, containers, self.constrains).find_path()
-        # if the no path been found, their is no solution with the current
+        plan = PAstar(heuristic, agent, containers, self.constrains).find_plan()
+        # if the no plan been found, their is no solution with the current
         # constrains, not to mention with even more constrains
-        if not(path is None):
-            # successfully found a path
-            self.solution[agent_num] = path
+        if not(plan is None):
+            # successfully found a plan
+            self.solution[agent_num] = plan
         else:
-            # no path found
+            # no plan found
             self.solution = None
             return False
         return True
@@ -94,7 +95,11 @@ class CBP_FCA():
             conflict = self.find_conflict(best_node)
             # if no Conflict is found, we found the optimal solution
             if conflict is None:
-                return best_node.solution
+                paths = []
+                for plan in best_node.solution:
+                    for agent in self.agents:
+                        paths.append(plan[agent])
+                return paths
             else:
                 # create a new node for each agent involved in the conflict
                 for c in conflict:
@@ -111,9 +116,9 @@ class CBP_FCA():
                         self.agents.index(c[0]),
                         self.h, c[0], self.assignment)
                     print("Solution is : ")
-                    for i, path in enumerate(new_node.solution):
+                    for i, plan in enumerate(new_node.solution):
                         print(str(i) + " : ", end="")
-                        for step in path:
+                        for step in plan:
                             print(str(step) + " --> ", end="")
                         print("\n")
                     if not(success):
@@ -149,20 +154,20 @@ class CBP_FCA():
 
     def find_conflict(self, node):
         """
-        Find the first conflict between two single-agent paths.
+        Find the first conflict between two single-agent plans.
         Even if more then two agents are involved in a conflict, the conflict is set
         between the first two agents found. At each node with a conflict,
         this will result in a branching factor of 2.
         """
-        for a1, path1 in enumerate(node.solution):
-            for a2, path2 in enumerate(node.solution):
-                # check if not the path1 and path2 are not from the same agent
+        for a1, plan1 in enumerate(node.solution):
+            for a2, plan2 in enumerate(node.solution):
+                # check if not the plan1 and plan2 are not from the same agent
                 if a1 == a2:
                     pass
                 else:
-                    # find a conflict in 2 paths
-                    conflict = self.find_conflict_in_2_paths(
-                        path1, path2, a1, a2)
+                    # find a conflict in 2 plans
+                    conflict = self.find_conflict_in_2_plans(
+                        plan1, plan2, a1, a2)
                     # if there is no conflict continue, else return conflict details
                     # as tuple.
                     if conflict is None:
@@ -172,10 +177,15 @@ class CBP_FCA():
         # return None if no Conflict is found
         return None
 
-    def find_conflict_in_2_paths(self, path1, path2, a1, a2):
+    def find_conflict_in_2_plans(self, plan1, plan2, a1, a2):
         """
         Returns the first conflict between two single-agent paths.
         """
+        agent1 = self.agents[a1]
+        agent2 = self.agents[a2]
+        path1 = plan1[agent1]
+        path1 = plan2[agent2]
+        #first check on vertex / swapping collisions for the agents
         # we consider the agent to stays at the goal position after reaching it
         if len(path1) < len(path2):
             time = len(path2)
@@ -188,11 +198,6 @@ class CBP_FCA():
             longest_path = path1
             shortest_path = path2
 
-        # get the inital position of the containers, by looking at which
-        # container has been assigned to the agent with number ai.
-        c1 = self.assignment[longest_path[0][1]].pos
-        c2 = self.assignment[shortest_path[0][1]].pos
-        # safe the prev positions for swapping conflicts
         prev_ver_a = longest_path[0]
         prev_ver_b = shortest_path[0]
         # check the paths for conflicts at each time_step
@@ -233,24 +238,38 @@ class CBP_FCA():
                             (step_b[1], prev_ver_b, step_b[0], t)]
                 else:
                     return [(step_a[1], prev_ver_a, step_a[0], t)]
-            # check for container conflicts, where 1 agent arrives with his
-            # container at an other container not yet reached by his agent.
-            # Otherwise results in an agent conflict.
-            # if agent 2 has reached his container, but agent 1 not
-            if step_a[2] is None and step_b[2] is not None:
-                # compare to container start position:
-                if step_b[0] == c1:
-                    return [(step_b[1], step_b[2], step_b[0], t)]
-            # if agent 2 has reached his container, but agent 1 not
-            elif step_a[2] is not None and step_b[2] is None:
-                if step_a[0] == c2:
-                    return [(step_b[1], step_b[2], step_b[0], t)]
-            # update positions
-            if step_a[2] is not None:
-                c1 = step_a[0]
-            if step_b[2] is not None:
-                c2 = step_a[0]
-            prev_ver_a = step_a[0]
-            prev_ver_b = step_b[0]
-        # returns None if no Conflict has been found
+
+        # if no conflict between the agents has been found:
+        #check for container vertex collisions for all the containers assgined
+        #to the two agents
+        for containers1 in self.assignment[agent1]:
+            for containers2 in self.assignment[agent2]:
+
+                path1 = plan1[container1]
+                path1 = plan2[container2]
+
+                # we consider the agent to stays at the goal position after reaching it
+                if len(path1) < len(path2):
+                    time = len(path2)
+                    # save the shortest path, to continue conflict checking
+                    longest_path = path2
+                    shortest_path = path1
+                    faster_con = container1
+                    slower_con = container2
+                else:
+                    time = len(path1)
+                    # save the shortest path, to continue conflict checking
+                    longest_path = path1
+                    shortest_path = path2
+                    faster_con = container2
+                    slower_con = container1
+
+                for t in range(time):
+
+                    if t < length(shortest_path):
+                        if path1[t] == path2[t]:
+                            return [(container1, path1[t], t), (container2, path1[t], t)]
+                    else:
+                        if longest_path[t] == shorest_path[-1]:
+                            return [(slower_con, shortest_path[-1], t)]
         return None

@@ -17,6 +17,7 @@ from heuristic import *
 from container import *
 from agent import *
 from graph import *
+from cbp_fca import *
 
 """
 G = Graph(1, 9)
@@ -79,6 +80,48 @@ for path in sol:
         print(str(step) + "-->", end="")
     print("\n")
 
+print("-----------------------------------------------------------------------------------------")
+"""
+G1 = Graph(8,8)
+
+a_starts = [G1.nodes[0][0], G1.nodes[0][1]]
+c_starts = [G1.nodes[2][2], G1.nodes[2][3], G1.nodes[3][2]]
+c_goals = [G1.nodes[7][7], G1.nodes[7][6], G1.nodes[6][7]]
+
+
+p1 = Problem(G1, a_starts, c_starts, c_goals)
+print(p1)
+
+assignment = defaultdict()
+assignment[p1.agents[0]] = [p1.containers[0], p1.containers[2]]
+assignment[p1.agents[1]] = [p1.containers[1]]
+
+sol = CBP_FCA(p1.agents, p1.containers, assignment, G1, PAstar, shortest_dist).find_solution()
+for path in sol:
+    for step in path:
+        print(str(step) + "-->", end="")
+    print("\n")"""
+
+
+G1 = Graph(8,8)
+
+a_starts = [G1.nodes[0][0]]
+c_starts = [G1.nodes[2][2]]
+c_goals = [G1.nodes[7][7]]
+
+
+p1 = Problem(G1, a_starts, c_starts, c_goals)
+print(p1)
+
+assignment = defaultdict()
+assignment[p1.agents[0]] = [p1.containers[0]]
+
+
+sol = CBP_FCA(p1.agents, p1.containers, assignment, G1, PAstar, shortest_dist).find_solution()
+for path in sol:
+    for step in path:
+        print(str(step) + "-->", end="")
+    print("\n")
 
 # for agent, path in enumerate(Cbs(agents, G, low_level, dir_dist).find_solution()):
 #    print("Agent " + str(agent) + ":")

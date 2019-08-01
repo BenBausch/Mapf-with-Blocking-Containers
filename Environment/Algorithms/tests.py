@@ -1,3 +1,10 @@
+import sys
+sys.path.insert(
+    0,
+    '/home/benimeni/Documents/uniFreiburg/semester6/Mapf-with-Blocking-Containers/Environment/World')
+sys.path.insert(
+    0,
+    '/home/benimeni/Documents/uniFreiburg/semester6/Mapf-with-Blocking-Containers/Environment/Algorithms/ClassicalMapf')
 from problem import *
 from cbs import *
 from t_astar import *
@@ -6,11 +13,10 @@ from heuristic import *
 from container import *
 from agent import *
 from graph import *
+from planningAstar import *
+from copy import copy
 import unittest
-import sys
-sys.path.insert(
-    0,
-    '/home/benimeni/Documents/uniFreiburg/semester6/Mapf-with-Blocking-Containers/Environment/World')
+
 
 
 class TestAstar(unittest.TestCase):
@@ -171,7 +177,7 @@ class TestCCBS(unittest.TestCase):
 
         a_starts = [G.nodes[1][0], G.nodes[0][1]]
         c_starts = [G.nodes[1][2], G.nodes[2][1]]
-        g_goals = [G.nodes[1][3], G.nodes[3][1]]
+        c_goals = [G.nodes[1][3], G.nodes[3][1]]
 
         p1 = Problem(G, a_starts, c_starts, c_goals)
 
@@ -186,6 +192,67 @@ class TestCCBS(unittest.TestCase):
             G,
             TAstar,
             dir_dist).find_solution()
+
+
+class TestHeu(unittest.TestCase):
+
+    def testShortest(self):
+        """
+        Tests the solution of Cbs.
+        """
+        G = Graph(4, 4)
+
+        a_starts = [G.nodes[1][0], G.nodes[0][1]]
+        c_starts = [G.nodes[1][2], G.nodes[2][1]]
+        c_goals = [G.nodes[1][3], G.nodes[3][1]]
+
+        self.assertEqual(shortest_dist(c_goals[0], [c_goals[0]], [c_goals[0]]),0)
+
+
+
+class TestPAstar(unittest.TestCase):
+
+    def testAOpen(self):
+        """
+        Tests the solution of Cbs.
+        """
+        G = Graph(4, 4)
+
+        a_starts = [G.nodes[1][0], G.nodes[0][1]]
+        c_starts = [G.nodes[1][2], G.nodes[2][1]]
+        c_goals = [G.nodes[1][3], G.nodes[3][1]]
+
+        p1 = Problem(G, a_starts, c_starts, c_goals)
+
+        assignment = defaultdict()
+        assignment[p1.agents[0]] = p1.containers[0]
+        assignment[p1.agents[1]] = p1.containers[1]
+
+        n1 = PAstarNode(None, p1.agents[0].pos, c_starts, 1, 0 ,0)
+        n2 = PAstarNode(None, p1.agents[0].pos, copy(c_starts), 1, 0 ,0)
+
+        self.assertEqual(PAstar(shortest_dist, p1.agents[0], p1.containers, defaultdict()).check_already_opened(n2, [n1]),True)
+
+    def AOpen1(self):
+        """
+        Tests the solution of Cbs.
+        """
+        G = Graph(4, 4)
+
+        a_starts = [G.nodes[1][0], G.nodes[0][1]]
+        c_starts = [G.nodes[1][2], G.nodes[2][1]]
+        c_goals = [G.nodes[1][3], G.nodes[3][1]]
+
+        p1 = Problem(G, a_starts, c_starts, c_goals)
+
+        assignment = defaultdict()
+        assignment[p1.agents[0]] = p1.containers[0]
+        assignment[p1.agents[1]] = p1.containers[1]
+
+        n1 = PAstarNode(None, p1.agents[0].pos, c_starts, 1, 0 ,0)
+        n2 = PAstarNode(None, p1.agents[0].pos, c_goals, 1, 0 ,0)
+
+        self.assertEqual(PAstar(shortest_dist, p1.agents[0], p1.containers, defaultdict()).check_already_opened(n2, [n1]),False)
 
 
 if __name__ == "__main__":
