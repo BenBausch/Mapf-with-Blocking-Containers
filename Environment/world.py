@@ -81,7 +81,7 @@ for path in sol:
     print("\n")
 
 print("-----------------------------------------------------------------------------------------")
-"""
+
 G1 = Graph(8,8)
 
 a_starts = [G1.nodes[0][0], G1.nodes[0][1]]
@@ -100,9 +100,8 @@ sol = CBP_FCA(p1.agents, p1.containers, assignment, G1, PAstar, shortest_dist).f
 for path in sol:
     for step in path:
         print(str(step) + "-->", end="")
-    print("\n")"""
-
-
+    print("\n")
+"""
 G1 = Graph(8,8)
 
 a_starts = [G1.nodes[0][0]]
@@ -121,7 +120,7 @@ sol = CBP_FCA(p1.agents, p1.containers, assignment, G1, PAstar, shortest_dist).f
 for path in sol:
     for step in path:
         print(str(step) + "-->", end="")
-    print("\n")
+    print("\n")"""
 
 # for agent, path in enumerate(Cbs(agents, G, low_level, dir_dist).find_solution()):
 #    print("Agent " + str(agent) + ":")

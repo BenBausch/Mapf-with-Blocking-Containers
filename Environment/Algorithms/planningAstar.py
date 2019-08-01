@@ -62,6 +62,7 @@ class PAstar():
 
             #get the best node in open
             best_index, best_node = self.best_node(open)
+            print("new best node : " + str(best_node.a_pos) + str(best_node.c_pos) + ", time: " + str(best_node.t) + "and heuristic:" + str(best_node.f))
 
             if self.is_goal(best_node):
                 print("the length of the closed list is :" + str(len(closed)))
@@ -109,8 +110,16 @@ class PAstar():
         return best_pos, best_node
 
     def change_c_pos(self, c_pos, c_num, vertex):
-        new_c_pos = copy(c_pos)
+        new_c_pos = []
+        for i in c_pos:
+            new_c_pos.append(i)
         new_c_pos[c_num] = vertex
+        return new_c_pos
+
+    def cp(self, c_pos):
+        new_c_pos = []
+        for i in c_pos:
+            new_c_pos.append(i)
         return new_c_pos
 
     def expand_node(self, node, open, closed):
@@ -123,13 +132,13 @@ class PAstar():
         # for the the move action
         for v in node.a_pos.adjacency:
             nodes_to_open.append(v)
-        #create new nodes for contrainer transporting actions
-        for n in nodes_to_open:
-            #check for each container if the agent could move it
-            for c_num, c in enumerate(self.containers):
-                #only add new nodes if agent is at the same vertex, than the
-                #container, it wants to transport
-                if node.a_pos == node.c_pos[c_num]:
+        #check for each container if the agent could move it
+        for c_num, c in enumerate(self.containers):
+            #only add new nodes if agent is at the same vertex, than the
+            #container, it wants to transport
+            if node.a_pos == node.c_pos[c_num]:
+                #create a new node for each transporting action
+                for n in nodes_to_open:
                     new_c_pos = self.change_c_pos(node.c_pos, c_num, n)
                     A = PAstarNode(
                         node,
@@ -140,9 +149,10 @@ class PAstar():
                         self.heuristic(n, new_c_pos, self.goals)
                         )
                     if not(self.check_already_opened(A, closed)):
-                        #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
-                        if self.check_consistency(A.a_pos, A.c_pos, node.a_pos, node.c_pos, node.t + 1):
-                            open.append(A)
+                        if not(self.check_already_added(A, open)):
+                            #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
+                            if self.check_consistency(c_num, A.a_pos, A.c_pos, node.a_pos, node.c_pos, node.t + 1):
+                                open.append(A)
         # for the wait action
         #nodes_to_open.append(node.a_pos)
         #create new nodes for the move actions
@@ -151,21 +161,47 @@ class PAstar():
             A = PAstarNode(
                 node,
                 n,
-                copy(node.c_pos),
+                self.cp(node.c_pos),
                 node.t+1,
                 node.g+1,
                 self.heuristic(n, node.c_pos, self.goals)
                 )
             if not(self.check_already_opened(A, closed)):
-                #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
-                if self.check_consistency(A.a_pos, A.c_pos, node.a_pos, node.c_pos, node.t + 1):
-                    open.append(A)
-                    #print(str(n) + " added to OPEN")
+                if not(self.check_already_added(A, open)):
+                    #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
+                    if self.check_consistency(-1, A.a_pos, A.c_pos, node.a_pos, node.c_pos, node.t + 1):
+                        open.append(A)
+                        #print(str(n) + " added to OPEN")
 
         #if the node is not already in the closed list add it to the closed list:
         if not(self.check_already_opened(node, closed)):
             closed.append(node)
         #print(str(node.vertex) + " has been added to the CLOSED")
+
+
+    def check_already_added(self, n, open):
+        """
+        Checks if node already in open
+        n: a search node PAstarNode
+        """
+
+        for v in open:
+            #print("Comparing with node: " + str(v.a_pos)+ str(v.c_pos) + str(v.t))
+            if n.a_pos.id == v.a_pos.id and n.t == v.t:
+                #print("agent pos and time the same")
+                #check for any container position to be different
+                same = True
+                for v_num, vertex in enumerate(n.c_pos):
+                    if vertex.id != v.c_pos[v_num].id:
+                        #print("hello found different c node:" + vertex.id + "and" + v.c_pos[v_num].id)
+                        same = False
+                        break
+                #if no change node has already been opened
+                if same:
+                    #print("alread PWVVWvvvsvwevvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
+                    return True
+        return False
+
 
     def check_already_opened(self, n, closed_list):
         """
@@ -191,16 +227,16 @@ class PAstar():
                     return True
         return False
 
-    def check_consistency(self,  new_a_pos, new_c_pos, old_a_pos, old_c_pos, time_step):
+    def check_consistency(self, c_num, new_a_pos, new_c_pos, old_a_pos, old_c_pos, time_step):
         """
         Checks if the expansion of the vertex2 is a valid move given the the Constrains of CBS.
         """
+        #check if two containers do not collide during planning
+        for c1, c_pos1 in enumerate(new_c_pos):
+                if c_num != -1 and c1 != c_num and c_pos1 == new_c_pos[c_num]:
+                    return False
         #check for all containers if they are allowed to be at the next position
         #at the next time step // conatiner vertex constrains
-        for c1, c_pos1 in enumerate(new_c_pos):
-            for c2, c_pos2 in enumerate(new_c_pos):
-                if c1 != c2 and c_pos1 == c_pos2:
-                    return False
         try:
             for c_num, c in enumerate(self.containers):
                  if self.constrains[(c, new_c_pos[c_num], time_step)]:
