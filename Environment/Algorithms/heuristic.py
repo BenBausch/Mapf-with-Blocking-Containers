@@ -18,17 +18,16 @@ def shortest_dist(agent_pos, containers_pos, cont_goals):
     Calculates a heuristic for the Planning Astar algorithm. h = distance from
     agent to nearest container + distance from containers to their goal location
     """
-    dist = sys.maxsize
+    dist = 0 #sys.maxsize
     counter = 0
     #heuristic for agent to nearest container
     for pos_num, pos in enumerate(containers_pos):
         if dir_dist(agent_pos, pos) < dist:
-            if pos != cont_goals[pos_num]:
-                dist = dir_dist(agent_pos, pos)
-            else:
-                counter += 1
-    if counter == len(containers_pos):
-        dist = 0
+            #if pos != cont_goals[pos_num]:
+            dist += dir_dist(agent_pos, pos)
+        counter += 1
+    #if counter == len(containers_pos):
+    dist = dist / counter
     #heuristic from each container to its goal location
     for pos_num, pos in enumerate(containers_pos):
         dist += dir_dist(pos, cont_goals[pos_num])
