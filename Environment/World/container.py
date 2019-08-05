@@ -48,4 +48,4 @@ class Container(MovableObject):
         pass
 
     def __repr__(self):
-        return str(self.num)
+        return "container :" + str(self.num)

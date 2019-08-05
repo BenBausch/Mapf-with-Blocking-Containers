@@ -61,16 +61,21 @@ c_goals = [G.nodes[1][3], G.nodes[3][1], G.nodes[3][6], G.nodes[6][3]]
 p1 = Problem(G, a_starts, c_starts, c_goals)
 print(p1)
 
+
 assignment = defaultdict()
 assignment[p1.agents[0]] = p1.containers[0]
 assignment[p1.agents[1]] = p1.containers[1]
 assignment[p1.agents[2]] = p1.containers[2]
 assignment[p1.agents[3]] = p1.containers[3]
 
+blocking = defaultdict()
+blocking[G.nodes[7][3]] = 1
+
 sol = C_Cbs(
     p1.agents,
     p1.containers,
     assignment,
+    blocking,
     G,
     TAstar,
     dir_dist).find_solution()
@@ -82,6 +87,22 @@ for path in sol:
 
 print("-----------------------------------------------------------------------------------------")
 
+assignment = defaultdict()
+assignment[p1.agents[0]] = [p1.containers[0]]
+assignment[p1.agents[1]] = [p1.containers[1]]
+assignment[p1.agents[2]] = [p1.containers[2]]
+assignment[p1.agents[3]] = [p1.containers[3]]
+
+
+sol = CBP_FCA(p1.agents, p1.containers, assignment, G, PAstar, shortest_dist).find_solution()
+
+for path in sol:
+    for step in path:
+        print(str(step) + "-->", end="")
+    print("\n")
+
+print("-----------------------------------------------------------------------------------------")
+"""
 G1 = Graph(8,8)
 
 a_starts = [G1.nodes[0][0], G1.nodes[0][1]]
@@ -100,7 +121,7 @@ sol = CBP_FCA(p1.agents, p1.containers, assignment, G1, PAstar, shortest_dist).f
 for path in sol:
     for step in path:
         print(str(step) + "-->", end="")
-    print("\n")
+    print("\n")"""
 """
 G1 = Graph(8,8)
 

@@ -14,7 +14,7 @@ class CA_CbsNode():
         for k, v in constrains.items():
             print(str(k) + " , ")
 
-    def find_solution(self, agents, heuristic, low_level, assignment):
+    def find_solution(self, agents, heuristic, low_level, assignment, blocking):
         # find a path for each agent
         for agent in agents:
             target = assignment[agent]
@@ -22,7 +22,7 @@ class CA_CbsNode():
                 agent,
                 target,
                 heuristic,
-                self.constrains).find_path()
+                self.constrains, blocking).find_path()
             # if for one agent no path is found, their can be no solution
             # with the current constrains, not to mention with even more
             # constrains
@@ -46,11 +46,12 @@ class CA_CbsNode():
             low_level,
             heuristic,
             agent,
-            assignment):
+            assignment,
+            blocking):
         # update the path of an agent, if a container or a vertex constraint
         # exist for that agent
         c = assignment[agent]
-        path = low_level(agent, c, heuristic, self.constrains).find_path()
+        path = low_level(agent, c, heuristic, self.constrains, blocking).find_path()
         # if the no path been found, their is no solution with the current
         # constrains, not to mention with even more constrains
         if not(path is None):
@@ -70,6 +71,7 @@ class C_Cbs():
             agents,
             containers,
             assignment,
+            blocking,
             graph,
             low_level,
             heuristic):
@@ -79,6 +81,7 @@ class C_Cbs():
         self.agents = agents
         self.containers = containers
         self.assignment = assignment
+        self.blocking = blocking
         self.graph = graph
         self.ll = low_level
         self.h = heuristic
@@ -87,7 +90,7 @@ class C_Cbs():
         constrains = defaultdict()
         open_list = []
         root = CA_CbsNode(constrains, 0)
-        success = root.find_solution(self.agents, self.h, self.ll, self.assignment)
+        success = root.find_solution(self.agents, self.h, self.ll, self.assignment, self.blocking)
         if not(success):
             return None
         root.SIC()
@@ -113,7 +116,7 @@ class C_Cbs():
                     new_node.solution = copy(best_node.solution)
                     success = new_node.update_solution(
                         self.agents.index(
-                            c[0]), self.ll, self.h, c[0], self.assignment)
+                            c[0]), self.ll, self.h, c[0], self.assignment, self.blocking)
                     print("Solution is : ")
                     for i, path in enumerate(new_node.solution):
                         print(str(i) + " : ", end="")

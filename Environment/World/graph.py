@@ -37,6 +37,9 @@ class Graph():
                 #counter1 += 1
         # return adj
 
+    def n(self, x, y):
+        return self.nodes[y][x]
+
     def __repr__(self):
         rep = ""
         for j in self.nodes:

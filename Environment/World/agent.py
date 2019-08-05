@@ -49,4 +49,4 @@ class Agent(MovableObject):
         pass
 
     def __repr__(self):
-        return str(self.num)
+        return "agent: " +str(self.num)

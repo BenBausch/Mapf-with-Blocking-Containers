@@ -42,7 +42,8 @@ class Astar():
             constrains,
             goal,
             start,
-            start_time):
+            start_time,
+            blocking):
 
         self.agent = agent
         self.container = container
@@ -52,6 +53,7 @@ class Astar():
         self.goal = goal
         self.start = start
         self.start_time = start_time
+        self.blocking = blocking
 
     def find_path(self):
         """
@@ -158,6 +160,13 @@ class Astar():
         """
         Checks if the expansion of the vertex2 is a valid move given the the Constrains of CBS.
         """
+        #check if agent can enter next position with the container
+        if self.loaded:
+            try:
+                if self.blocking[vertex2] ==  1:
+                    return False
+            except KeyError:
+                pass
         # check for swapping edge constraint
         try:
             if self.constrains[(self.agent, vertex1, vertex2, time_step)] == 1:
