@@ -12,39 +12,78 @@ from problem import *
 from container import *
 from agent import *
 from graph import *
+from t_astar import *
+from c_cbs import *
 
 
-#generate quadratic graphs
-quadratic_graphs = []
-for d in range(5, 40, 5):
-    g = Graph(d,d)
-    quadratic_graphs.append(g)
+G1 = Graph(9, 4)
+G2 = Graph(15, 7)
+G3 = Graph(21, 10)
+G4 = Graph(27, 13)
+G5 = Graph(33, 16)
+G6 = Graph(39, 19)
 
-#generate rectangular graphs
-rectangular_graphs = []
-for x in range(5,40, 5):
-    for y in range(3, 38, 5):
-        g = Graph(x,y)
-        rectangular_graphs= []
-
-G1 = Graph(5,5)
-G2 = Graph(10,10)
-G3 = Graph(15,15)
-G4 = Graph(20,20)
-G5 = Graph(25,25)
-G6 = Graph(30,30)
-G7 = Graph(35,35)
-G8 = Graph(40, 40)
-G9 = Graph(5, 20)
-G10 = Graph(3, 15)
-G11 = Graph(10, 25)
-G12 = Graph(15, 10)
+problems_G1 = []
+problems_G2 = []
+problems_G3 = []
+problems_G4 = []
+problems_G5 = []
+problems_G6 = []
 
 
 #ten problems per grid size
 #two problems per agent count
 
-#problem for G1 5 x 5 grid
-a_starts = [G.nodes[1][0], G.nodes[0][1], G.nodes[2][3], G.nodes[5][6]]
-c_starts = [G.nodes[1][2], G.nodes[2][1], G.nodes[4][4], G.nodes[7][7]]
-c_goals = [G.nodes[1][3], G.nodes[3][1], G.nodes[3][6], G.nodes[6][3]]
+#problems for G1 grid -------------------------------------------------------------------------------
+G = G1
+
+a_starts = [G.n(0,0), G.n(0,1), G.n(0,2), G.n(0,3)]
+c_starts = [G.n(3,1), G.n(2,1), G.n(4,2), G.n(5,1)]
+c_goals = [G.n(8,1), G.n(8,0), G.n(8,2), G.n(8,3)]
+
+p1G1 = Problem(G, a_starts, c_starts, c_goals)
+
+print(p1G1)
+
+problems_G1.append(p1G1)
+
+for p in problems_G1:
+    sol = C_Cbs(
+        p.agents,
+        p.containers,
+        p.assignment,
+        p.blocking,
+        p.graph,
+        TAstar,
+        dir_dist).find_solution()
+
+for path in sol:
+    for step in path:
+        print(str(step) + "-->", end="")
+    print("\n")
+
+
+#problems for G6 grid---------------------------------------------------------------------------------
+
+G=G6
+
+a = [G.n(0,3), G.n(0,5), G.n(0,17), G.n(0,15), G.n(0,10)]
+c_s = [G.n(3, 1), G.n(9, 2), G.n(14, 1), G.n(16, 1), G.n(15, 2)]
+c_g = [G.n(38, 1), G.n(38, 2), G.n(38, 3), G.n(38, 4), G.n(38, 5)]
+
+p1G6 = Problem(G, a, c_s, c_g)
+
+print(p1G6)
+
+problems_G6.append(p1G6)
+
+
+for p in problems_G6:
+    sol = C_Cbs(
+        p.agents,
+        p.containers,
+        p.assignment,
+        p.blocking,
+        p.graph,
+        TAstar,
+        dir_dist).find_solution()
