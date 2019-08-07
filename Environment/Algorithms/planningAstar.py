@@ -131,7 +131,8 @@ class PAstar():
         nodes_to_open = []
         # for the the move action
         for v in node.a_pos.adjacency:
-            nodes_to_open.append(v)
+            if not(v.is_wall):
+                nodes_to_open.append(v)
         #check for each container if the agent could move it
         for c_num, c in enumerate(self.containers):
             #only add new nodes if agent is at the same vertex, than the

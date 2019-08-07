@@ -135,7 +135,8 @@ class Astar():
         nodes_to_open = []
         # for the the move action
         for v in node.vertex.adjacency:
-            nodes_to_open.append(v)
+            if not(v.is_wall):
+                nodes_to_open.append(v)
         # for the wait action
         nodes_to_open.append(node.vertex)
         # create serch nodes

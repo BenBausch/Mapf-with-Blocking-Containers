@@ -6,6 +6,7 @@ class Node():
         self.CONTAINER = 1
         self.AGENT = 2
         self.AGENT_CONTAINER = 3
+        self.is_wall = False
         # stats about vertex
         self.id = str(x) + "," + str(y)
         self.x = x
