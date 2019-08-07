@@ -1,6 +1,7 @@
 from collections import defaultdict
 from copy import copy
-from conflicts import *
+
+from .conflicts import *
 
 
 class CA_CbsNode():
@@ -117,12 +118,14 @@ class C_Cbs():
                     success = new_node.update_solution(
                         self.agents.index(
                             c[0]), self.ll, self.h, c[0], self.assignment, self.blocking)
-                    print("Solution is : ")
+                    """print("Solution is : ")
                     for i, path in enumerate(new_node.solution):
+                        time_step = 0
                         print(str(i) + " : ", end="")
                         for step in path:
-                            print(str(step) + " --> ", end="")
-                        print("\n")
+                            print(str(step) + " at time :" + str(time_step) +" --> ", end="")
+                            time_step += 1
+                        print("\n")"""
                     if not(success):
                         continue
                     new_node.SIC()

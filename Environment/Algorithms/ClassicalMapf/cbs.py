@@ -1,6 +1,6 @@
 from collections import defaultdict
 from copy import copy
-from conflicts import *
+from Algorithms import *
 
 
 class CbsNode():

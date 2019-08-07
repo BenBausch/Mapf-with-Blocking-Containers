@@ -1,6 +1,6 @@
-from node import *
-from agent import *
-from moveableObject import *
+from .node import *
+from .agent import *
+from .moveableObject import *
 
 
 class Container(MovableObject):

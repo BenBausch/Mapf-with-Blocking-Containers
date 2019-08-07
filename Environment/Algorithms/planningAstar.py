@@ -3,7 +3,7 @@ Author : Ben Bausch <benbausch@gmail.com>
 Copyrigth Ben Bausch 2019
 """
 from collections import defaultdict
-from heuristic import *
+from .heuristic import *
 from copy import copy
 
 class PAstarNode():

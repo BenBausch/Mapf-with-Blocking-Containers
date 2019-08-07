@@ -3,7 +3,7 @@ Author : Ben Bausch <benbausch@gmail.com>
 Copyrigth Ben Bausch 2019
 """
 from collections import defaultdict
-from heuristic import *
+from .heuristic import *
 
 
 class AstarNode():
@@ -149,12 +149,26 @@ class Astar():
                 n,
                 node.time + 1)
             if not(self.check_already_opened(A, closed_list)):
-                #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
-                if self.check_consistency(node.vertex, n, node.time + 1):
-                    open_list.append(A)
-                    #print(str(n) + " added to OPEN")
-        closed_list.append(node)
+                if not(self.check_already_added(A, open_list)):
+                    #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
+                    if self.check_consistency(node.vertex, n, node.time+1):
+                        open_list.append(A)
+                        #print(str(n) + " added to OPEN"
+        if not(self.check_already_opened(node, closed_list)):
+            closed_list.append(node)
         #print(str(node.vertex) + " has been added to the CLOSED")
+
+    def check_already_added(self, n, open):
+        """
+        Checks if node already in open
+        n: a search node PAstarNode
+        """
+        for v in open:
+            if n.vertex.id == v.vertex.id and n.time == v.time:
+                #print(n.id + " and " + v.id)
+                return True
+        return False
+
 
     def check_consistency(self, vertex1, vertex2, time_step):
         """

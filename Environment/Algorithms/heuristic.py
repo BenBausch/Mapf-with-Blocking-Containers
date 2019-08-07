@@ -1,9 +1,6 @@
 import math
-from node import *
+from World.node import *
 import sys
-sys.path.insert(
-    0,
-    '/home/benimeni/Documents/uniFreiburg/semester6/Mapf-with-Blocking-Containers/Environment/World')
 
 
 def dir_dist(node1, node2):

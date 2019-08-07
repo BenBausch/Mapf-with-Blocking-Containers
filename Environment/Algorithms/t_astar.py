@@ -1,4 +1,4 @@
-from astar import *
+from .astar import *
 
 
 class TAstar():
@@ -41,7 +41,7 @@ class TAstar():
                 new_start,
                 start_time,
                 self.blocking).find_path()
-            start_time = len(sub_path)
+            start_time = len(sub_path)-1
             # to the first target the agent moves alone, to the second target, the agent
             # moves with the container. This needs to be safe, to check on
             # conflicts later on.

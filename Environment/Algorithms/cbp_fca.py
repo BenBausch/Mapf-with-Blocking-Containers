@@ -1,7 +1,7 @@
 from collections import defaultdict
 from copy import copy
-from conflicts import *
-from planningAstar import PAstar
+from .conflicts import *
+from .planningAstar import *
 
 
 class CBP_FCANode():

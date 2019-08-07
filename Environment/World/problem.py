@@ -1,6 +1,5 @@
-from graph import *
-from agent import *
-from termcolor import colored
+from .graph import *
+from .agent import *
 from collections import defaultdict
 
 
@@ -62,25 +61,50 @@ class Problem():
 
 
     def __repr__(self):
-        rep = ""
-        for y in range(self.graph.ydim):
-            text = " | "
-            for x in range(self.graph.xdim):
-                node_id = str(x) + "," + str(y)
-                for agent in self.agents:
-                    if agent.pos.id == node_id:
-                        text = text[:-1]
-                        text += colored(str(agent), "blue")
-                for con in self.containers:
-                    if con.pos.id == node_id:
-                        text = text[:-1] if text[:-1] != " " else text
-                        text += colored(str(con), "red")
-                try:
-                    if self.blocking[self.graph.n(x,y)] == 1:
-                        text = text[:-1]
-                        text += colored("X", "green")
-                except KeyError:
-                    pass
-                text += " | "
-            rep += text + "\n"
-        return rep
+        try:
+            from termcolor import colored
+            rep = ""
+            for y in range(self.graph.ydim):
+                text = " | "
+                for x in range(self.graph.xdim):
+                    node_id = str(x) + "," + str(y)
+                    for agent in self.agents:
+                        if agent.pos.id == node_id:
+                            text = text[:-1]
+                            text += colored(str(agent), "blue")
+                    for con in self.containers:
+                        if con.pos.id == node_id:
+                            text = text[:-1] if text[:-1] != " " else text
+                            text += colored(str(con), "red")
+                    try:
+                        if self.blocking[self.graph.n(x,y)] == 1:
+                            text = text[:-1]
+                            text += colored("X", "green")
+                    except KeyError:
+                        pass
+                    text += " | "
+                rep += text + "\n"
+            return rep
+        except ModuleNotFoundError:
+            rep = ""
+            for y in range(self.graph.ydim):
+                text = " | "
+                for x in range(self.graph.xdim):
+                    node_id = str(x) + "," + str(y)
+                    for agent in self.agents:
+                        if agent.pos.id == node_id:
+                            text = text[:-1]
+                            text += str(agent)
+                    for con in self.containers:
+                        if con.pos.id == node_id:
+                            text = text[:-1] if text[:-1] != " " else text
+                            text += str(con)
+                    try:
+                        if self.blocking[self.graph.n(x,y)] == 1:
+                            text = text[:-1]
+                            text += "X"
+                    except KeyError:
+                        pass
+                    text += " | "
+                rep += text + "\n"
+            return rep
