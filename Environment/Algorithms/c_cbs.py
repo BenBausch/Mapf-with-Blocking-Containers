@@ -11,7 +11,7 @@ class CA_CbsNode():
         self.num_constrains = num_constrains
         self.solution = []
         self.cost = 0
-        print("New Node Generated with following constrains:")
+        #print("New Node Generated with following constrains:")
         for k, v in constrains.items():
             print(str(k) + " , ")
 
@@ -141,7 +141,7 @@ class C_Cbs():
         If two nodes have the same cost, the one with the least constrains is
         selected.
         """
-        print("finding the best node.")
+        #print("finding the best node.")
         best_node = open_list[0]
         best_node_num = 0
         # find the node with the smallest cost
@@ -155,7 +155,7 @@ class C_Cbs():
                     node.num_constrains < best_node.num_constrains:
                 best_node = node
                 best_node_num = node_num
-        print("best node is node number" + str(best_node_num))
+        #print("best node is node number" + str(best_node_num))
         return best_node, best_node_num
 
     def find_conflict(self, node):
