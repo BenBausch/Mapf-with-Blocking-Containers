@@ -16,7 +16,7 @@ def create_job():
         "\n#SBATCH -p cpu_ivy \n#SBATCH --time=01:00 \n#SBATCH -a 1-2\n\n\n\n")
 
         for i in range(1000):
-            f.write("f [ " + str(i) + " -eq $SLURM_ARRAY_TASK_ID ]; then \n"
+            f.write("if [ " + str(i) + " -eq $SLURM_ARRAY_TASK_ID ]; then \n"
                 + "python3 benchmarks.py " + str(i) + "\nexit $? + \nfi\n\n\n")
         print("finished parsing")
 
