@@ -17,7 +17,7 @@ def create_job():
 
         for i in range(1000):
             f.write("if [ " + str(i) + " -eq $SLURM_ARRAY_TASK_ID ]; then \n"
-                + "python3 benchmarks.py " + str(i) + "\nexit $? + \nfi\n\n\n")
+                + "    python3 benchmarks.py " + str(i) + "\n    exit $? + \nfi\n\n\n")
         print("finished parsing")
 
 if __name__=="__main__":
