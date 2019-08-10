@@ -8,6 +8,8 @@ from .heuristic import *
 
 class AstarNode():
 
+    number_nodes = 0
+
     def __init__(self, parent, g, h, vertex, time):
         """
         An Astar node is used during single-Agent planning.
@@ -20,6 +22,7 @@ class AstarNode():
           The planning is performed on Astar nodes, but these have to correspond to
           a vertex in the environment.
         """
+        AstarNode.number_nodes += 1
         self.vertex = vertex
         self.parent = parent
         self.g = g

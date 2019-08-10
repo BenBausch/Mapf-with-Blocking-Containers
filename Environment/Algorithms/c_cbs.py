@@ -1,12 +1,15 @@
 from collections import defaultdict
 from copy import copy
-
+from itertools import count
 from .conflicts import *
 
 
 class CA_CbsNode():
 
+    number_nodes = 0
+
     def __init__(self, constrains, num_constrains):
+        CA_CbsNode.number_nodes += 1
         self.constrains = constrains
         self.num_constrains = num_constrains
         self.solution = []
@@ -102,7 +105,7 @@ class C_Cbs():
             conflict = self.find_conflict(best_node)
             # if no Conflict is found, we found the optimal solution
             if conflict is None:
-                return best_node.solution
+                return best_node.solution, best_node.number_nodes
             else:
                 # create a new node for each agent involved in the conflict
                 for c in conflict:

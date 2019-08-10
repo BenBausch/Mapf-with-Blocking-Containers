@@ -8,6 +8,8 @@ from copy import copy
 
 class PAstarNode():
 
+    number_nodes = 0
+
     def __init__(self, parent, agentpos, containerpos, time, g, h):
         """
         parent: parent node need for path reconstruction
@@ -17,6 +19,7 @@ class PAstarNode():
         g: cost to get to the state, the same as time if actions have unit cost
         h: heuristic value of the node
         """
+        PAstarNode.number_nodes += 1
         self.parent = parent
         self.a_pos = agentpos
         self.c_pos = containerpos

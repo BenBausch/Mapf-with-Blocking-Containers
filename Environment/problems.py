@@ -206,7 +206,8 @@ for p_num,p in enumerate(problems_G6):
             TAstar,
             dir_dist).find_solution()
 
-        for path in sol:
+        for path in sol[0]:
             for step in path:
                 print(str(step) + "-->", end="")
             print("\n")
+        print(sol[1])

@@ -6,7 +6,10 @@ from .planningAstar import *
 
 class CBP_FCANode():
 
+    number_nodes = 0
+
     def __init__(self, constrains, num_constrains):
+        CBP_FCANode.number_nodes += 1
         self.constrains = constrains
         self.num_constrains = num_constrains
         self.solution = []
@@ -98,7 +101,7 @@ class CBP_FCA():
                 paths = []
                 for agent_num, plan in enumerate(best_node.solution):
                     paths.append(plan[self.agents[agent_num]])
-                return paths
+                return paths, best_node.number_nodes
             else:
                 # create a new node for each agent involved in the conflict
                 for c in conflict:
