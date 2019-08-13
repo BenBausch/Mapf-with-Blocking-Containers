@@ -108,9 +108,45 @@ def generate_Problem(file, start, stop, G):
 if __name__ == "__main__":
     arguments = sys.argv
     stop = int(arguments[1])
-    tasks = "./maps/tasks.txt"
-    G = mapparser.create_Graph()
+    print("PARSING THE MAP!")
+    #tasks = "./maps/boston_0/tasks.txt"
+    #file2 = "./maps/boston_0/Boston_0_256.txt"
+    #tasks = "./maps/brc/tasks.txt"
+    #file2 = "./maps/brc/brc.txt"
+    tasks = "./maps/small/tasks.txt"
+    file2 = "./maps/small/s.txt"
+    G = mapparser.create_Graph(file2)
+    print("GENERATE PROBLEM INSTANCE:")
+    print(str(G.n(93,37).is_wall))
     p = generate_Problem(tasks, 0, stop, G)
-    print(p.agents)
-    print(p.containers)
-    #test_solvability(tasks, G)
+    print("agent starts:")
+    for agent in p.agents:
+        c = agent.pos
+        print(str(c) + " " + str(c.is_wall) + "    ", end="")
+    print("\ncontainer starts:")
+    for cont in p.containers:
+        c = cont.pos
+        print(str(c) + " " + str(c.is_wall) + "    ", end="")
+    print("\ncontainer goals:")
+    for cont in p.containers:
+        c = cont.goal
+        print(str(c) + " " + str(c.is_wall) + "    ", end="")
+    #a_starts = [G.n(74,55)] #agent
+    #c_starts = [G.n(23,17)] #container starts
+    #c_goals = [G.n(176,46)] #container goals
+    #p = Problem(G, a_starts, c_starts, c_goals)
+    print("\n")
+    sol = C_Cbs(
+        p.agents,
+        p.containers,
+        p.assignment,
+        p.blocking,
+        p.graph,
+        TAstar,
+        dir_dist).find_solution()
+        #planningAstar,
+        #shortest_dist).find_solution()
+    print(len(p.agents))
+    print(sol[1])
+    print(sol[2])
+    print(sol[3])

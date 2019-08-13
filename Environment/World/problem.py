@@ -29,7 +29,7 @@ class Problem():
         self.assign()
         # create blocking
         self.blocking = defaultdict()
-        self.block()
+        #self.block()
 
 
     def block(self):
@@ -55,9 +55,11 @@ class Problem():
         agent_num = len(self.agents)
         #assign each container to the agent corresponding to the position
         #equal to the modulo between the container number and the agent number
+        for agent in self.agents:
+            self.assignment[agent] = []
         for c_num, container in enumerate(self.containers):
             assigned_agent = c_num % agent_num
-            self.assignment[self.agents[assigned_agent]] = container
+            self.assignment[self.agents[assigned_agent]].append(container)
 
 
     def __repr__(self):

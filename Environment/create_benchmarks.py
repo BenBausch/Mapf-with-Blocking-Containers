@@ -25,17 +25,14 @@ def change_probabilities(prob_list, num_rest_cases, index):
             p = prob
 
 
-
-
-
-def generate_Problem(G):
+def generate_Problem(G, file):
     """
     This function creates a problem with size number of agents
     G is the problem Graph
     """
     #generate up to 1000 agents / containers
     #1000 tasks of format: agent.node container.start.node container.goal.node
-    with open("./maps/tasks.txt", "w") as f:
+    with open(file, "w") as f:
         f.truncate(0)
         #get all the nodes that are not walls
         no_wall_nodes = G.no_wall_nodes()
@@ -77,5 +74,12 @@ def generate_Problem(G):
 
 
 if __name__ == "__main__":
-    G = mapparser.create_Graph()
-    generate_Problem(G)
+    #file1 = "./maps/boston_0/tasks.txt"
+    #file2 = "./maps/boston_0/Boston_0_256.txt"
+    #file1 = "./maps/brc/tasks.txt"
+    #file2 = "./maps/brc/brc.txt"
+    file1 = "./maps/small/tasks.txt"
+    file2 = "./maps/small/s.txt"
+
+    G = create_Graph(file2)
+    generate_Problem(G, file1)

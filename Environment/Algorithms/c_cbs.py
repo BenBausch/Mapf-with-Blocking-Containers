@@ -44,6 +44,18 @@ class CA_CbsNode():
         for single_solution in self.solution:
             self.cost += len(single_solution)
 
+    def makeSpan(self):
+        """
+        returns the makespan cost over all the agents.
+        """
+        max = 0
+        for single_solution in self.solution:
+            if len(single_solution) > max:
+                max = len(single_solution)
+        return max
+
+
+
     def update_solution(
             self,
             agent_num,
@@ -105,7 +117,7 @@ class C_Cbs():
             conflict = self.find_conflict(best_node)
             # if no Conflict is found, we found the optimal solution
             if conflict is None:
-                return best_node.solution, best_node.number_nodes
+                return best_node.solution, best_node.number_nodes, best_node.cost, best_node.makeSpan()
             else:
                 # create a new node for each agent involved in the conflict
                 for c in conflict:
@@ -204,8 +216,8 @@ class C_Cbs():
 
         # get the inital position of the containers, by looking at which
         # container has been assigned to the agent with number ai.
-        c1 = self.assignment[longest_path[0][1]].pos
-        c2 = self.assignment[shortest_path[0][1]].pos
+        c1 = self.assignment[longest_path[0][1]][0].pos
+        c2 = self.assignment[shortest_path[0][1]][0].pos
         # safe the prev positions for swapping conflicts
         prev_ver_a = longest_path[0]
         prev_ver_b = shortest_path[0]

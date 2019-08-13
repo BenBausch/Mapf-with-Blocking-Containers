@@ -65,10 +65,10 @@ class PAstar():
 
             #get the best node in open
             best_index, best_node = self.best_node(open)
-            print("new best node : " + str(best_node.a_pos) + str(best_node.c_pos) + ", time: " + str(best_node.t) + "and heuristic:" + str(best_node.f))
+            #print("new best node : " + str(best_node.a_pos) + str(best_node.c_pos) + ", time: " + str(best_node.t) + "and heuristic:" + str(best_node.f))
 
             if self.is_goal(best_node):
-                print("the length of the closed list is :" + str(len(closed)))
+                #print("the length of the closed list is :" + str(len(closed)))
                 plan = []
                 node = best_node
                 while node.parent is not None:

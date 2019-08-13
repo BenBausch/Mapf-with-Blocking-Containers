@@ -3,7 +3,7 @@ from .astar import *
 
 class TAstar():
 
-    def __init__(self, agent, container, heuristic, constrains, blocking):
+    def __init__(self, agent, containers, heuristic, constrains, blocking):
         """
         agent: is the agent, for which we search the shortest path to bring its container to
           its goal location
@@ -11,13 +11,13 @@ class TAstar():
         heuristic: the heuristic used in the search
         """
         self.agent = agent
-        self.container = container
+        self.container = containers[0]
         # the start position for the TAstar algorithm
         self.start = agent.pos
         # the goal, which have to be reached in the given order
-        self.goals = [container.pos, container.goal]
+        self.goals = [containers[0].pos, containers[0].goal]
         self.h = heuristic
-        self.constrains = constrains#
+        self.constrains = constrains
         self.blocking = blocking
 
     def find_path(self):
@@ -41,7 +41,10 @@ class TAstar():
                 new_start,
                 start_time,
                 self.blocking).find_path()
-            start_time = len(sub_path)-1
+            if sub_path is None:
+                raise NameError("OHHHHHH NOOOOOOOOOOOO")
+            else:
+                start_time = len(sub_path)-1
             # to the first target the agent moves alone, to the second target, the agent
             # moves with the container. This needs to be safe, to check on
             # conflicts later on.

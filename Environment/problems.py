@@ -171,10 +171,6 @@ problems_G6.append(p)
 
 
 
-
-
-
-
 #print the paths to the command line
 """
 for p in problems_G1:
@@ -205,9 +201,20 @@ for p_num,p in enumerate(problems_G6):
             p.graph,
             TAstar,
             dir_dist).find_solution()
+            #planningAstar,
+            #shortest_dist).find_solution()
 
-        for path in sol[0]:
-            for step in path:
+        for tuple in sol[0]:
+            for step in tuple:
                 print(str(step) + "-->", end="")
             print("\n")
+
+
+        """for tuple in sol[0]:
+            for path in tuple:
+                for step in path:
+                    print(str(step) + "-->", end="")
+                print("\n")"""
         print(sol[1])
+        print(sol[2])
+        print(sol[3])

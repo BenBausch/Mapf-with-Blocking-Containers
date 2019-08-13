@@ -33,13 +33,26 @@ class CBP_FCANode():
                 return False
         return True
 
-    def SIC(self):
+    def SIC(self, agents):
         """
         Returns the sum over all cost for all the agents. This method only works
         for unit cost of 1 per action.
         """
-        for single_solution in self.solution:
-            self.cost += len(single_solution)
+        for plan_num, single_plan in enumerate(self.solution):
+            agent = agents[plan_num]
+            self.cost += len(single_plan[agent])
+
+    def makeSpan(self, agents):
+        """
+        Returns the sum over all cost for all the agents. This method only works
+        for unit cost of 1 per action.
+        """
+        max = 0
+        for plan_num, single_plan in enumerate(self.solution):
+            agent = agents[plan_num]
+            if len(single_plan[agent]) > max:
+                max = len(single_plan[agent])
+        return max
 
     def update_solution(
             self,
@@ -90,7 +103,7 @@ class CBP_FCA():
         success = root.find_solution(self.agents, self.h, self.assignment)
         if not(success):
             return None
-        root.SIC()
+        root.SIC(self.agents)
         open_list.append(root)
         while len(open_list) > 0:
             best_node, best_node_num = self.get_best_node(open_list)
@@ -100,8 +113,12 @@ class CBP_FCA():
             if conflict is None:
                 paths = []
                 for agent_num, plan in enumerate(best_node.solution):
-                    paths.append(plan[self.agents[agent_num]])
-                return paths, best_node.number_nodes
+                    agent = self.agents[agent_num]
+                    plan_list = [plan[agent]]
+                    for container in self.assignment[agent]:
+                        plan_list.append(plan[container])
+                    paths.append(plan_list)
+                return paths, best_node.number_nodes, best_node.cost, best_node.makeSpan(self.agents)
             else:
                 # create a new node for each agent involved in the conflict
                 for c in conflict:
@@ -131,7 +148,7 @@ class CBP_FCA():
                                 print(str(step) + " --> ", end="")
                             print("\n")
                     if success:
-                        new_node.SIC()
+                        new_node.SIC(self.agents)
                         print("The node cost is: " + str(new_node.cost))
                         open_list.append(new_node)
                         print("nodes in open: " + str(len(open_list)))

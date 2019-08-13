@@ -96,6 +96,9 @@ class Astar():
 
             # remove node from open_list
             open_list.pop(best_index)
+        if len(open_list) == 0:
+            return None
+
 
     def best_node(self, open_list):
         """
@@ -111,6 +114,10 @@ class Astar():
                 #print(colored("best value: " + str(node.f), "red"))
                 best_pos = node_pos
                 cur_node = node
+            #if cur_node.f == node.f and cur_node.h > node.h:
+                #for nodes with same f value choose the one with the low h value
+                #best_pos = node_pos
+                #cur_node = node
 
         return best_pos, cur_node
 
@@ -119,7 +126,7 @@ class Astar():
         Checks if a node is the goal node.
         node: an Astar node
         """
-        if node.vertex == self.goal:
+        if node.vertex.id == self.goal.id:
             return True
         else:
             return False
@@ -133,6 +140,7 @@ class Astar():
         closed_list: list of nodes, that have been expaneded and should not be
         opened again
         """
+        print("expanding node: " + str(node.vertex) + " with f value: " + str(node.f) + "at time step: " + str(node.time))
         # determin which nodes should be opened depending on the action of the
         # agent
         nodes_to_open = []
@@ -141,7 +149,7 @@ class Astar():
             if not(v.is_wall):
                 nodes_to_open.append(v)
         # for the wait action
-        nodes_to_open.append(node.vertex)
+        #nodes_to_open.append(node.vertex)
         # create serch nodes
         for n in nodes_to_open:
             A = AstarNode(
@@ -168,7 +176,7 @@ class Astar():
         n: a search node PAstarNode
         """
         for v in open:
-            if n.vertex.id == v.vertex.id and n.time == v.time:
+            if n.vertex.id == v.vertex.id: #and n.time == v.time:
                 #print(n.id + " and " + v.id)
                 return True
         return False
@@ -221,7 +229,7 @@ class Astar():
         opened again
         """
         for v in closed_list:
-            if n.vertex.id == v.vertex.id and n.time == v.time:
+            if n.vertex.id == v.vertex.id: #and n.time == v.time:
                 #print(n.id + " and " + v.id)
                 return True
         return False
