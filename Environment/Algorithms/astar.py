@@ -140,7 +140,7 @@ class Astar():
         closed_list: list of nodes, that have been expaneded and should not be
         opened again
         """
-        print("expanding node: " + str(node.vertex) + " with f value: " + str(node.f) + "at time step: " + str(node.time))
+        # print("expanding node: " + str(node.vertex) + " with f value: " + str(node.f) + "at time step: " + str(node.time))
         # determin which nodes should be opened depending on the action of the
         # agent
         nodes_to_open = []
