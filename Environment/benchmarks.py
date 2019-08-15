@@ -113,12 +113,14 @@ if __name__ == "__main__":
     #file2 = "./maps/boston_0/Boston_0_256.txt"
     #tasks = "./maps/brc/tasks.txt"
     #file2 = "./maps/brc/brc.txt"
-    tasks = "./maps/small/tasks.txt"
-    file2 = "./maps/small/s.txt"
+    #tasks = "./maps/small/tasks.txt"
+    #file2 = "./maps/small/s.txt"
+    tasks = "./maps/random32/tasks.txt"
+    file2 = "./maps/random32/r32.txt"
+
     G = mapparser.create_Graph(file2)
-    print("GENERATE PROBLEM INSTANCE:")
-    print(str(G.n(93,37).is_wall))
     p = generate_Problem(tasks, 0, stop, G)
+    """print("GENERATE PROBLEM INSTANCE:")
     print("agent starts:")
     for agent in p.agents:
         c = agent.pos
@@ -130,7 +132,7 @@ if __name__ == "__main__":
     print("\ncontainer goals:")
     for cont in p.containers:
         c = cont.goal
-        print(str(c) + " " + str(c.is_wall) + "    ", end="")
+        print(str(c) + " " + str(c.is_wall) + "    ", end="")"""
     #a_starts = [G.n(74,55)] #agent
     #c_starts = [G.n(23,17)] #container starts
     #c_goals = [G.n(176,46)] #container goals

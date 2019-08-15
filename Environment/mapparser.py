@@ -45,6 +45,9 @@ if __name__=="__main__":
     #file2 = "./maps/boston_0/graph.txt"
     #file1 = "./maps/brc/brc.txt"
     #file2 = "./maps/brc/graph.txt"
-    file1 = "./maps/small/s.txt"
-    file2 = "./maps/small/graph.txt"
+    #file1 = "./maps/small/s.txt"
+    #file2 = "./maps/small/graph.txt"
+    file1 = "./maps/random32/r32.txt"
+    file2 = "./maps/random32/graph.txt"
+
     write_Graph(create_Graph(file1), file2)

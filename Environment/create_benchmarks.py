@@ -2,6 +2,7 @@ from mapparser import *
 from copy import copy
 import numpy as np
 import random
+import sys
 
 
 def change_probabilities(prob_list, num_rest_cases, index):
@@ -25,7 +26,7 @@ def change_probabilities(prob_list, num_rest_cases, index):
             p = prob
 
 
-def generate_Problem(G, file):
+def generate_Problem(G, file, number):
     """
     This function creates a problem with size number of agents
     G is the problem Graph
@@ -44,7 +45,7 @@ def generate_Problem(G, file):
         #get the container start and the goal position from same list
         container_positions =  [1/len(no_wall_nodes) for i in range(len(no_wall_nodes))]
         #generate 1000 tasks
-        for i in range(1000):
+        for i in range(number):
             #how many nodes are still available
             a_rest = len(no_wall_nodes)
             c_rest = len(no_wall_nodes)
@@ -74,12 +75,17 @@ def generate_Problem(G, file):
 
 
 if __name__ == "__main__":
+    arguments = sys.argv
+    number = int(arguments[1])
+
     #file1 = "./maps/boston_0/tasks.txt"
     #file2 = "./maps/boston_0/Boston_0_256.txt"
     #file1 = "./maps/brc/tasks.txt"
     #file2 = "./maps/brc/brc.txt"
-    file1 = "./maps/small/tasks.txt"
-    file2 = "./maps/small/s.txt"
+    #file1 = "./maps/small/tasks.txt"
+    #file2 = "./maps/small/s.txt"
+    file1 = "./maps/random32/tasks.txt"
+    file2 = "./maps/random32/r32.txt"
 
     G = create_Graph(file2)
-    generate_Problem(G, file1)
+    generate_Problem(G, file1, number)
