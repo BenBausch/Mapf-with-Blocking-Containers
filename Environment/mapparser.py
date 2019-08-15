@@ -39,6 +39,25 @@ def write_Graph(G, file):
                     text += "."
             f.write(text + "\n")
 
+def write_problem(P, file):
+    """
+    Writes Problem representation to a txt file.
+    """
+    with open(file, "w") as f:
+        f.truncate(0)
+        rep = ""
+        for j in P.graph.nodes:
+            text = ""
+            for node in j:
+                if node.is_wall:
+                    text += "@"
+                else:
+                    try:
+                        if P.blocking[node] == 1:
+                            text += "X"
+                    except :
+                        text += "."
+            f.write(text + "\n")
 
 if __name__=="__main__":
     #file1 = "./maps/boston_0/Boston_0_256.txt"
@@ -47,7 +66,30 @@ if __name__=="__main__":
     #file2 = "./maps/brc/graph.txt"
     #file1 = "./maps/small/s.txt"
     #file2 = "./maps/small/graph.txt"
-    file1 = "./maps/random32/r32.txt"
-    file2 = "./maps/random32/graph.txt"
+    #file1 = "./maps/random32/r32.txt"
+    #file2 = "./maps/random32/graph.txt"
+    #file1 = "./maps/coast/c.txt"
+    #file2 = "./maps/coast/graph.txt"
+    #file1 = "./maps/densem128/dm128.txt"
+    #file2 = "./maps/densem128/graph.txt"
+    #file1 = "./maps/m128/m128.txt"
+    #file2 = "./maps/m128/graph.txt"
+    file1 = "./maps/random64/r64.txt"
+    file2 = "./maps/random64/graph.txt"
 
     write_Graph(create_Graph(file1), file2)
+
+
+    #a = []
+    #c_s = []
+    #c_g = []
+
+    #G = Graph(15, 8)
+    #file2 = "./maps/g15x8/graph.txt"
+    #G = Graph(39, 20)
+    #file2 = "./maps/g39x20/graph.txt"
+    #G = Graph(111, 95)
+    #file2 = "./maps/g111x95/graph.txt"
+    #p = Problem(G, a, c_s, c_g)
+
+    #write_problem(p, file2)

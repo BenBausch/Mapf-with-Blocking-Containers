@@ -45,7 +45,7 @@ class Problem():
                 #all the position where y = 0,3,6,9,.. should not be blocked
                 if x == 0 or (x % 6 == 1) or (x == self.graph.xdim-1):
                     continue
-                if (y % 3 == 0):
+                if (y % 3 == 0) or (y == self.graph.ydim-1):
                     continue
                 #all other positions should be blocked by containers
                 self.blocking[self.graph.n(x,y)] = 1

@@ -29,7 +29,7 @@ def set_walls(G, index, tasks):
         #get position
         x = int(matches[2][1])
         y = int(matches[2][2])
-        G.n(x,y).is_wall = True
+        G.n(x,y).is_wall = False
 
 
 
@@ -108,18 +108,41 @@ def generate_Problem(file, start, stop, G):
 if __name__ == "__main__":
     arguments = sys.argv
     stop = int(arguments[1])
+    f_num = int(arguments[2])
     print("PARSING THE MAP!")
-    #tasks = "./maps/boston_0/tasks.txt"
+    #tasks = "./maps/boston_0/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/boston_0/Boston_0_256.txt"
-    #tasks = "./maps/brc/tasks.txt"
+    #tasks = "./maps/brc/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/brc/brc.txt"
-    #tasks = "./maps/small/tasks.txt"
+    #tasks = "./maps/small/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/small/s.txt"
-    tasks = "./maps/random32/tasks.txt"
-    file2 = "./maps/random32/r32.txt"
+    #tasks = "./maps/random32/tasks"+ str(f_num) +".txt"
+    #file2 = "./maps/random32/r32.txt"
+    #tasks = "./maps/coast/tasks"+ str(f_num) +".txt"
+    #file2 = "./maps/coast/c.txt"
+    #tasks = "./maps/densem128/tasks"+ str(f_num) +".txt"
+    #file2 = "./maps/densem128/dm128.txt"
+    #tasks = "./maps/m128/tasks"+ str(f_num) +".txt"
+    #file2 = "./maps/m128/m128.txt"
+    tasks = "./maps/random64/tasks"+ str(f_num) +".txt"
+    file2 = "./maps/random64/r64.txt"
+
 
     G = mapparser.create_Graph(file2)
+
+
+    #G = Graph(15, 8)
+    #tasks = "./maps/g15x8/tasks"+ str(f_num) +".txt"
+    #G = Graph(39, 20)
+    #tasks = "./maps/g39x20/tasks"+ str(f_num) +".txt"
+    #G = Graph(111, 95)
+    #tasks = "./maps/g111x95/tasks"+ str(f_num) +".txt"
+
+
+
+    #test_solvability(tasks, G)
     p = generate_Problem(tasks, 0, stop, G)
+    print(p)
     """print("GENERATE PROBLEM INSTANCE:")
     print("agent starts:")
     for agent in p.agents:
@@ -133,11 +156,7 @@ if __name__ == "__main__":
     for cont in p.containers:
         c = cont.goal
         print(str(c) + " " + str(c.is_wall) + "    ", end="")"""
-    #a_starts = [G.n(74,55)] #agent
-    #c_starts = [G.n(23,17)] #container starts
-    #c_goals = [G.n(176,46)] #container goals
-    #p = Problem(G, a_starts, c_starts, c_goals)
-    print("\n")
+    """print("\n")
     sol = C_Cbs(
         p.agents,
         p.containers,
@@ -151,4 +170,4 @@ if __name__ == "__main__":
     print(len(p.agents))
     print(sol[1])
     print(sol[2])
-    print(sol[3])
+    print(sol[3])"""

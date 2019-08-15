@@ -66,6 +66,44 @@ class Graph():
                     no_walls.append(node)
         return no_walls
 
+    def endpoints(self):
+        """
+        returns all possible agent start and container goal positions for
+        warehouse environments
+        """
+        cont_nodes = []
+        for x in range(self.xdim):
+            for y in range(self.ydim):
+                #blocks of 5 containers use mod 6
+                #all the positions where x = 0 or graph.xdim-1 should
+                #not be containers
+                #all the position where y = 0 or graph.ydim -1 should not
+                #be containers
+                if x == 0 or (x == self.xdim-1) or (y == self.ydim-1):
+                    cont_nodes.append(self.n(x,y))
+                #all other positions can be containers
+        return cont_nodes
+
+
+    def container_nodes(self):
+        """
+        returns all possible container start positions for warehouse envs
+        """
+        cont_nodes = []
+        for x in range(self.xdim):
+            for y in range(self.ydim):
+                #blocks of 5 containers use mod 6
+                #all the positions where x = 0, 1, 7, 13 and grap.xdim-1 should
+                #not be containers
+                #all the position where y = 0,3,6,9,.. should not be containers
+                if x == 0 or (x % 6 == 1) or (x == self.xdim-1):
+                    continue
+                if (y % 3 == 0) or (y == self.ydim -1):
+                    continue
+                #all other positions can be containers
+                cont_nodes.append(self.n(x,y))
+        return cont_nodes
+
 
     def n(self, x, y):
         """
