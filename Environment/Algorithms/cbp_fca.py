@@ -14,15 +14,15 @@ class CBP_FCANode():
         self.num_constrains = num_constrains
         self.solution = []
         self.cost = 0
-        print("New Node Generated with following constrains:")
-        for k, v in constrains.items():
-            print(str(k) + " , ")
+        #print("New Node Generated with following constrains:")
+        #for k, v in constrains.items():
+        #    print(str(k) + " , ")
 
     def find_solution(self, agents, heuristic, assignment):
         # find a plan for each agent
         for agent in agents:
             containers = assignment[agent]
-            print("searching for agent :" + str(agent.num))
+            #print("searching for agent :" + str(agent.num))
             plan = PAstar(heuristic, agent, containers, self.constrains).find_plan()
             # if for one agent no plan is found, their can be no solution
             # with the current constrains, not to mention with even more
@@ -140,18 +140,18 @@ class CBP_FCA():
                         agent_num,
                         self.h, c[1], self.assignment)
 
-                    print("Solution is : ")
+                    """#print("Solution is : ")
                     if new_node.solution is not None:
                         for i, plan in enumerate(new_node.solution):
-                            print(str(i) + " : ", end="")
+                            #print(str(i) + " : ", end="")
                             for step in plan[self.agents[i]]:
-                                print(str(step) + " --> ", end="")
-                            print("\n")
+                                #print(str(step) + " --> ", end="")
+                            #print("\n")"""
                     if success:
                         new_node.SIC(self.agents)
-                        print("The node cost is: " + str(new_node.cost))
+                        #print("The node cost is: " + str(new_node.cost))
                         open_list.append(new_node)
-                        print("nodes in open: " + str(len(open_list)))
+                        #print("nodes in open: " + str(len(open_list)))
 
 
     def get_best_node(self, open_list):
@@ -160,7 +160,7 @@ class CBP_FCA():
         If two nodes have the same cost, the one with the least constrains is
         selected.
         """
-        print("finding the best node.")
+        #print("finding the best node.")
         best_node = open_list[0]
         best_node_num = 0
         # find the node with the smallest cost
@@ -174,7 +174,7 @@ class CBP_FCA():
                     node.num_constrains < best_node.num_constrains:
                 best_node = node
                 best_node_num = node_num
-        print("best node is node number" + str(best_node_num))
+        #print("best node is node number" + str(best_node_num))
         return best_node, best_node_num
 
     def find_conflict(self, node):
