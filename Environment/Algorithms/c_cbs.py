@@ -15,8 +15,8 @@ class CA_CbsNode():
         self.solution = []
         self.cost = 0
         #print("New Node Generated with following constrains:")
-        for k, v in constrains.items():
-            print(str(k) + " , ")
+        #for k, v in constrains.items():
+        #    print(str(k) + " , ")
 
     def find_solution(self, agents, heuristic, low_level, assignment, blocking):
         # find a path for each agent
@@ -144,9 +144,9 @@ class C_Cbs():
                     if not(success):
                         continue
                     new_node.SIC()
-                    print("The node cost is: " + str(new_node.cost))
+                    #print("The node cost is: " + str(new_node.cost))
                     open_list.append(new_node)
-                    print("nodes in open: " + str(len(open_list)))
+                    #print("nodes in open: " + str(len(open_list)))
         return None
 
 

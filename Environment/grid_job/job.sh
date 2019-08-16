@@ -5,7 +5,7 @@
 #SBATCH -J HELLOWORLD
 #SBATCH -p cpu_ivy 
 #SBATCH --time=05:00 
-#SBATCH -a 1-2
+#SBATCH -a 1-190
 
 
 
