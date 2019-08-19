@@ -13,11 +13,11 @@ def create_job():
         f.write("#!/bin/bash \n#SBATCH -D /home/bauschb/MAPF/Environment " +
         "\n#SBATCH -e joblog/std.err.%j" +
         "\n#SBATCH -o joblog/std.out.%j \n#SBATCH -J HELLOWORLD" +
-        "\n#SBATCH -p cpu_ivy \n#SBATCH --time=05:00 \n#SBATCH -a 1-2\n\n\n\n")
+        "\n#SBATCH -p cpu_ivy \n#SBATCH --time=10:00 \n#SBATCH -a 1-2\n\n\n\n")
 
         counter = 1
         for j in range(1, 11):
-            for i in range(1,20):
+            for i in range(1,30):
                 f.write("if [ " + str(counter) + " -eq $SLURM_ARRAY_TASK_ID ]; then \n"
                     + "    python3 benchmarks.py " + str(i) + " " + str(j)+ "\n    exit $? \nfi\n\n\n")
                 counter += 1 

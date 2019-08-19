@@ -116,14 +116,14 @@ if __name__ == "__main__":
     #file2 = "./maps/brc/brc.txt"
     #tasks = "./maps/small/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/small/s.txt"
-    tasks = "./maps/random32/tasks"+ str(f_num) +".txt"
-    file2 = "./maps/random32/r32.txt"
+    #tasks = "./maps/random32/tasks"+ str(f_num) +".txt"
+    #file2 = "./maps/random32/r32.txt"
     #tasks = "./maps/coast/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/coast/c.txt"
     #tasks = "./maps/densem128/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/densem128/dm128.txt"
-    #tasks = "./maps/m128/tasks"+ str(f_num) +".txt"
-    #file2 = "./maps/m128/m128.txt"
+    tasks = "./maps/m128/tasks"+ str(f_num) +".txt"
+    file2 = "./maps/m128/m128.txt"
     #tasks = "./maps/random64/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/random64/r64.txt"
 
@@ -157,16 +157,16 @@ if __name__ == "__main__":
         c = cont.goal
         print(str(c) + " " + str(c.is_wall) + "    ", end="")"""
     #print("\n")
-    sol = CBP_FCA(
+    sol = C_Cbs(
         p.agents,
         p.containers,
         p.assignment,
-        #p.blocking,
+        p.blocking,
         p.graph,
-        #TAstar,
-        #dir_dist).find_solution()
-        planningAstar,
-        shortest_dist).find_solution()
+        TAstar,
+        dir_dist).find_solution()
+        #planningAstar,
+        #shortest_dist).find_solution()
     print(len(p.agents))
     print(sol[1])
     print(sol[2])

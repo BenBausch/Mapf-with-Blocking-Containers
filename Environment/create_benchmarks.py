@@ -141,11 +141,11 @@ if __name__ == "__main__":
     #file2 = "./maps/densem128/dm128.txt"
     #file1 = "./maps/m128/tasks"
     #file2 = "./maps/m128/m128.txt"
-    file1 = "./maps/random64/tasks"
-    file2 = "./maps/random64/r64.txt"
-    G = create_Graph(file2)
+    #file1 = "./maps/random64/tasks"
+    #file2 = "./maps/random64/r64.txt"
+    #G = create_Graph(file2)
 
-    generate_Problem(G, file1, number, f_num)
+    #generate_Problem(G, file1, number, f_num)
 
     #G = Graph(15, 8)
     #file1 = "./maps/g15x8/tasks"
@@ -153,8 +153,8 @@ if __name__ == "__main__":
     #G = Graph(39, 20)
     #file1 = "./maps/g39x20/tasks"
     #file2 = "./maps/g39x20/graph.txt"
-    #G = Graph(111, 95)
-    #file1 = "./maps/g111x95/tasks"
-    #file2 = "./maps/g111x95/graph.txt"
+    G = Graph(111, 95)
+    file1 = "./maps/g111x95/tasks"
+    file2 = "./maps/g111x95/graph.txt"
 
-    #generate_Warehouse(G, file1, number, f_num)
+    generate_Warehouse(G, file1, number, f_num)
