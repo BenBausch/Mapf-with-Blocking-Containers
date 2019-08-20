@@ -29,7 +29,7 @@ class Problem():
         self.assign()
         # create blocking
         self.blocking = defaultdict()
-        self.block()
+        #self.block()
 
 
     def block(self):
