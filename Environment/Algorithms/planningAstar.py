@@ -5,6 +5,7 @@ Copyrigth Ben Bausch 2019
 from collections import defaultdict
 from .heuristic import *
 from copy import copy
+import queue as Q
 
 class PAstarNode():
 
@@ -69,9 +70,10 @@ class PAstar():
 
     def find_plan(self):
         #open is a list of node, which have not been expanded yet
-        open = []
+        open = Q.PriorityQueue()
+        open_hash = defaultdict()
         #close is a list of node, which have already been expaneded
-        closed = []
+        closed = defaultdict()
         #create the first container position list.
         c_pos = []
         for c in self.containers:
@@ -79,11 +81,15 @@ class PAstar():
         # create start node
         start_h = self.heuristic(self.agent.pos, c_pos, self.goals)
         start = PAstarNode(None, self.agent.pos, c_pos, 0, 0, start_h)
-        open.append(start)
-        while len(open) > 0:
+        open.put(start)
+        open_hash[self.h_string(start.f, start.a_pos, start.c_pos)] = True
+        #print(self.h_string(start.f, start.a_pos, start.c_pos))
+        #start A* search
+        while not(open.empty()):
 
             #get the best node in open
-            best_index, best_node = self.best_node(open)
+            best_node = open.get()
+            open_hash[self.h_string(best_node.f, best_node.a_pos, best_node.c_pos)] -=1
             #print("new best node : " + str(best_node.a_pos) + str(best_node.c_pos) + ", time: " + str(best_node.t) + "and heuristic:" + str(best_node.f))
 
             if self.is_goal(best_node):
@@ -98,10 +104,8 @@ class PAstar():
 
             # expand the node if the node is not the goal and afterwards add to node
             # to closed_list
-            self.expand_node(best_node, open, closed)
+            self.expand_node(best_node, open, closed, open_hash)
 
-            #remove best node from open
-            open.pop(best_index)
         return None
 
 
@@ -117,20 +121,6 @@ class PAstar():
                 return False
         return True
 
-    def best_node(self, open):
-        """
-        returns node with best heuristic value
-        """
-        best_node = open[0]
-        node_pos = -1
-        best_pos = 0
-        for node in open:
-            node_pos += 1
-            if best_node.f > node.f:
-                best_pos = node_pos
-                best_node = node
-        return best_pos, best_node
-
     def change_c_pos(self, c_pos, c_num, vertex):
         new_c_pos = []
         for i in c_pos:
@@ -144,12 +134,26 @@ class PAstar():
             new_c_pos.append(i)
         return new_c_pos
 
-    def expand_node(self, node, open, closed):
+    def h_string(self,f ,a_pos, c_pos):
+        """
+        creates tuples to hash
+        """
+        if f is not None:
+            tuple = str(f) + ":" + a_pos.id
+        else:
+            tuple = a_pos.id
+        for i in c_pos:
+            tuple += ":" + i.id
+        return tuple
+
+
+    def expand_node(self, node, open, closed, open_hash):
         """
         add new nodes to the open list, if they have not been opened yet
         """
         # determin which nodes should be opened depending on the action of the
         # agent
+        #print("\n")
         nodes_to_open = []
         # for the the move action
         for v in node.a_pos.adjacency:
@@ -175,9 +179,13 @@ class PAstar():
                         if not(self.check_already_added(A, open)):
                             #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
                             if self.check_consistency(c_num, A.a_pos, A.c_pos, node.a_pos, node.c_pos, node.t + 1):
-                                open.append(A)
+                                open.put(A)
+                                try:
+                                    open_hash[self.h_string(A.f, A.a_pos, A.c_pos)] += 1
+                                except:
+                                    open_hash[self.h_string(A.f, A.a_pos, A.c_pos)] = 1
         # for the wait action
-        #nodes_to_open.append(node.a_pos)
+        nodes_to_open.append(node.a_pos)
         #create new nodes for the move actions
         # create serch nodes
         for n in nodes_to_open:
@@ -193,12 +201,19 @@ class PAstar():
                 if not(self.check_already_added(A, open)):
                     #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
                     if self.check_consistency(-1, A.a_pos, A.c_pos, node.a_pos, node.c_pos, node.t + 1):
-                        open.append(A)
+                        open.put(A)
+                        try:
+                            open_hash[self.h_string(A.f, A.a_pos, A.c_pos)] += 1
+                        except:
+                            open_hash[self.h_string(A.f, A.a_pos, A.c_pos)] = 1
                         #print(str(n) + " added to OPEN")
 
         #if the node is not already in the closed list add it to the closed list:
         if not(self.check_already_opened(node, closed)):
-            closed.append(node)
+            try:
+                closed[self.h_string(None,node.a_pos, node.c_pos)].append(node.f)
+            except:
+                closed[self.h_string(None,node.a_pos, node.c_pos)] = [node.f]
         #print(str(node.vertex) + " has been added to the CLOSED")
 
 
@@ -207,23 +222,11 @@ class PAstar():
         Checks if node already in open
         n: a search node PAstarNode
         """
-
-        for v in open:
-            #print("Comparing with node: " + str(v.a_pos)+ str(v.c_pos) + str(v.t))
-            if n.a_pos.id == v.a_pos.id and n.f == v.f:
-                #print("agent pos and time the same")
-                #check for any container position to be different
-                same = True
-                for v_num, vertex in enumerate(n.c_pos):
-                    if vertex.id != v.c_pos[v_num].id:
-                        #print("hello found different c node:" + vertex.id + "and" + v.c_pos[v_num].id)
-                        same = False
-                        break
-                #if no change node has already been opened
-                if same:
-                    #print("alread PWVVWvvvsvwevvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
-                    return True
-        return False
+        try:
+            if open[self.h_string(n.f, n.a_pos, n.c_pos)] > 0:
+                return True
+        except:
+            return False
 
 
     def check_already_opened(self, n, closed_list):
@@ -232,23 +235,14 @@ class PAstar():
         n: a search node PAstarNode
         closed_list
         """
-
-        for v in closed_list:
-            #print("Comparing with node: " + str(v.a_pos)+ str(v.c_pos) + str(v.t))
-            if n.a_pos.id == v.a_pos.id and n.f == v.f:
-                #print("agent pos and time the same")
-                #check for any container position to be different
-                same = True
-                for v_num, vertex in enumerate(n.c_pos):
-                    if vertex.id != v.c_pos[v_num].id:
-                        #print("hello found different c node:" + vertex.id + "and" + v.c_pos[v_num].id)
-                        same = False
-                        break
-                #if no change node has already been opened
-                if same:
-                    #print("alread PWVVWvvvsvwevvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
+        try:
+            for i in closed[self.h_string(None,n.a_pos, n.c_pos)]:
+                if i == n.f:
                     return True
-        return False
+            else:
+                return False
+        except:
+            return False
 
     def check_consistency(self, c_num, new_a_pos, new_c_pos, old_a_pos, old_c_pos, time_step):
         """

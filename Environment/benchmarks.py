@@ -157,16 +157,16 @@ if __name__ == "__main__":
         c = cont.goal
         print(str(c) + " " + str(c.is_wall) + "    ", end="")"""
     #print("\n")
-    sol = C_Cbs(
+    sol = CBP_FCA(
         p.agents,
         p.containers,
         p.assignment,
-        p.blocking,
+        #p.blocking,
         p.graph,
-        TAstar,
-        dir_dist).find_solution()
-        #planningAstar,
-        #shortest_dist).find_solution()
+        #TAstar,
+        #dir_dist).find_solution()
+        planningAstar,
+        shortest_dist).find_solution()
     print(len(p.agents))
     print(sol[1])
     print(sol[2])
