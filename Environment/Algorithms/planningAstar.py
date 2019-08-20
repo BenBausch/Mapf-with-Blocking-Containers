@@ -30,6 +30,25 @@ class PAstarNode():
         #print("Create new PAstar serach node: " + str(self.a_pos) + str(self.c_pos) + ", time: " + str(self.t) + "and heuristic:" + str(self.f))
 
 
+    def __eq__(self, other):
+        return ((self.f,self.g) == (other.f,other.g))
+
+    def __ne__(self, other):
+        return ((self.f,self.g) != (other.f,other.g))
+
+    def __lt__(self, other):
+        return ((self.f,self.g) < (other.f,other.g))
+
+    def __le__(self, other):
+        return ((self.f,self.g) <= (other.f,other.g))
+
+    def __gt__(self, other):
+        return ((self.f,self.g) > (other.f,other.g))
+
+    def __ge__(self, other):
+        return ((self.f,self.g) >= (other.f,other.g))
+
+
 class PAstar():
 
     def __init__(self, heuristic, agent, containers, contrains):
@@ -191,7 +210,7 @@ class PAstar():
 
         for v in open:
             #print("Comparing with node: " + str(v.a_pos)+ str(v.c_pos) + str(v.t))
-            if n.a_pos.id == v.a_pos.id and n.t == v.t:
+            if n.a_pos.id == v.a_pos.id and n.f == v.f:
                 #print("agent pos and time the same")
                 #check for any container position to be different
                 same = True
@@ -216,7 +235,7 @@ class PAstar():
 
         for v in closed_list:
             #print("Comparing with node: " + str(v.a_pos)+ str(v.c_pos) + str(v.t))
-            if n.a_pos.id == v.a_pos.id and n.t == v.t:
+            if n.a_pos.id == v.a_pos.id and n.f == v.f:
                 #print("agent pos and time the same")
                 #check for any container position to be different
                 same = True

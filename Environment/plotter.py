@@ -8,10 +8,10 @@ def plot_experiment(path):
 
     # List all files in a directory using scandir()
     num_regex = r"([0-9]+)"
-    solved_agents = [0 for i in range(20)]
-    sum_nodes = [0 for i in range(20)]
-    sum_sic = [0 for i in range(20)]
-    sum_makeSpan = [0 for i in range(20)]
+    solved_agents = [0 for i in range(30)]
+    sum_nodes = [0 for i in range(30)]
+    sum_sic = [0 for i in range(30)]
+    sum_makeSpan = [0 for i in range(30)]
     stats = [sum_nodes, sum_sic, sum_makeSpan]
 
     with os.scandir(path) as entries:
@@ -53,15 +53,15 @@ def plot_experiment(path):
 
     print(solved_agents)
 
-    agent_list = [i for i in range(1,21)]
+    agent_list = [i for i in range(1,31)]
     fig, ax = plt.subplots()
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
     plt.ylabel("Instaces solved in [%]")
     plt.xlabel("Number of agents")
     plt.plot( agent_list, solved_agents,'go-')
-    plt.axis([0, 21, 0, 110])
-    plt.xticks([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
+    plt.axis([0, 31, 0, 110])
+    plt.xticks([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29])
     plt.yticks([i*10 for i in range(11)])
     plt.show()
 
@@ -73,5 +73,5 @@ def plot_experiment(path):
 if __name__=="__main__":
     arg = sys.argv
     name = (arg[1])
-    path = "./maps/" + name + "/cbs/"
+    path = "./maps/" + name #+ "/cbs/"
     plot_experiment(path)
