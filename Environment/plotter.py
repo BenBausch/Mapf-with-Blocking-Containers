@@ -73,5 +73,5 @@ def plot_experiment(path):
 if __name__=="__main__":
     arg = sys.argv
     name = (arg[1])
-    path = "./maps/" + name + "/cbs_fca/"
+    path = "./maps/" + name + "/cbs/"
     plot_experiment(path)

@@ -176,7 +176,7 @@ class Astar():
         n: a search node PAstarNode
         """
         for v in open:
-            if n.vertex.id == v.vertex.id: #and n.time == v.time:
+            if n.vertex.id == v.vertex.id and n.f == v.f:
                 #print(n.id + " and " + v.id)
                 return True
         return False
@@ -229,7 +229,7 @@ class Astar():
         opened again
         """
         for v in closed_list:
-            if n.vertex.id == v.vertex.id: #and n.time == v.time:
+            if n.vertex.id == v.vertex.id and n.f == v.f:
                 #print(n.id + " and " + v.id)
                 return True
         return False

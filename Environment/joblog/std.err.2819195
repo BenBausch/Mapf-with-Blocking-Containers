@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "benchmarks.py", line 167, in <module>
+    dir_dist).find_solution()
+  File "/home/bauschb/MAPF/Environment/Algorithms/c_cbs.py", line 135, in find_solution
+    c[0]), self.ll, self.h, c[0], self.assignment, self.blocking)
+  File "/home/bauschb/MAPF/Environment/Algorithms/c_cbs.py", line 70, in update_solution
+    path = low_level(agent, c, heuristic, self.constrains, blocking).find_path()
+  File "/home/bauschb/MAPF/Environment/Algorithms/t_astar.py", line 45, in find_path
+    raise NameError("OHHHHHH NOOOOOOOOOOOO")
+NameError: OHHHHHH NOOOOOOOOOOOO

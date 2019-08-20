@@ -1,11 +1,11 @@
 #!/bin/bash 
 #SBATCH -D /home/bauschb/MAPF/Environment 
 #SBATCH -e joblog/std.err.%j
-#SBATCH -o maps/m128/cbs_fca/std.out.%j 
+#SBATCH -o maps/g111x95/cbs/std.out.%j 
 #SBATCH -J HELLOWORLD
 #SBATCH -p cpu_ivy 
 #SBATCH --time=05:00 
-#SBATCH -a 1-190
+#SBATCH -a 1-290
 
 
 

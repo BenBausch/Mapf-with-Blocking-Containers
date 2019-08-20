@@ -122,21 +122,21 @@ if __name__ == "__main__":
     #file2 = "./maps/coast/c.txt"
     #tasks = "./maps/densem128/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/densem128/dm128.txt"
-    tasks = "./maps/m128/tasks"+ str(f_num) +".txt"
-    file2 = "./maps/m128/m128.txt"
+    #tasks = "./maps/m128/tasks"+ str(f_num) +".txt"
+    #file2 = "./maps/m128/m128.txt"
     #tasks = "./maps/random64/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/random64/r64.txt"
 
 
-    G = mapparser.create_Graph(file2)
+    #G = mapparser.create_Graph(file2)
 
 
     #G = Graph(15, 8)
     #tasks = "./maps/g15x8/tasks"+ str(f_num) +".txt"
     #G = Graph(39, 20)
     #tasks = "./maps/g39x20/tasks"+ str(f_num) +".txt"
-    #G = Graph(111, 95)
-    #tasks = "./maps/g111x95/tasks"+ str(f_num) +".txt"
+    G = Graph(111, 95)
+    tasks = "./maps/g111x95/tasks"+ str(f_num) +".txt"
 
 
 
