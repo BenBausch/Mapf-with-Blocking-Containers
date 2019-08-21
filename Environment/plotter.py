@@ -75,19 +75,19 @@ def plot_experiment(path, name1, name2):
     ax2.spines['right'].set_visible(False)
     ax2.spines['top'].set_visible(False)
     ax2.bar( agent_list, sum_nodes)
-    ax2.axis([0, 31, 0, 500])
+    ax2.axis([0, 31, 0, 10])
     ax2.set(title='Average Number of High Level Nodes per Solved Instances', ylabel='High Level Nodes', xlabel=("Number of Agents"))
 
     ax3.spines['right'].set_visible(False)
     ax3.spines['top'].set_visible(False)
     ax3.bar( agent_list, sum_makeSpan)
-    ax3.axis([0, 31, 0, 50])
+    ax3.axis([0, 31, 0, 10])
     ax3.set(title='Average Make Span per Solved Instances', ylabel='Make Span', xlabel=("Number of Agents"))
 
     ax4.spines['right'].set_visible(False)
     ax4.spines['top'].set_visible(False)
     ax4.bar( agent_list, sum_sic)
-    ax4.axis([0, 31, 0, 1000])
+    ax4.axis([0, 31, 0, 50])
     ax4.set(title='Average SIC per Solved Instances', ylabel='SIC', xlabel=("Number of Agents"))
 
     plt.xticks([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29])
@@ -105,6 +105,6 @@ def plot_experiment(path, name1, name2):
 if __name__=="__main__":
     arg = sys.argv
     name = (arg[1])
-    name2 = 'cbs'
+    name2 = 'cbp'
     path = "./maps/" + name + "/"+ name2+"/"
     plot_experiment(path, name, name2)
