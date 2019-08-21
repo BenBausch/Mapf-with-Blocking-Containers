@@ -59,7 +59,7 @@ class PAstar():
         containers: list of containers, which have been assigned to the agent
         contrains: contrains with, which the path has to be consistent with
         """
-        self.heuristic = heuristic
+        self.heuristic = container_dist
         self.agent = agent
         self.containers = containers
         self.constrains = contrains

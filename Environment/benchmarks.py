@@ -161,6 +161,7 @@ if __name__ == "__main__":
         p.agents,
         p.containers,
         p.assignment,
+        p.unassigned,
         #p.blocking,
         p.graph,
         #TAstar,
