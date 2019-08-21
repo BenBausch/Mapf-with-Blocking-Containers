@@ -4,7 +4,7 @@ import re
 import matplotlib.pyplot as plt
 
 
-def plot_experiment(path):
+def plot_experiment(path, name1, name2):
 
     # List all files in a directory using scandir()
     num_regex = r"([0-9]+)"
@@ -91,7 +91,10 @@ def plot_experiment(path):
     ax4.set(title='Average SIC per Solved Instances', ylabel='SIC', xlabel=("Number of Agents"))
 
     plt.xticks([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29])
+    ig = plt.gcf()
     plt.show()
+    plt.draw()
+    fig.savefig('./maps/' + name + '_plot_'+ name2 + '.png', dpi=300)
 
 
 
@@ -102,5 +105,6 @@ def plot_experiment(path):
 if __name__=="__main__":
     arg = sys.argv
     name = (arg[1])
-    path = "./maps/" + name + "/cbp/"
-    plot_experiment(path)
+    name2 = 'cbs'
+    path = "./maps/" + name + "/"+ name2+"/"
+    plot_experiment(path, name, name2)

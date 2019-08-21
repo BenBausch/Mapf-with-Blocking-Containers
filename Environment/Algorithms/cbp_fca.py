@@ -83,6 +83,7 @@ class CBP_FCA():
             agents,
             containers,
             assignment,
+            unassigned,
             graph,
             low_level,
             heuristic):
@@ -92,9 +93,16 @@ class CBP_FCA():
         self.agents = agents
         self.containers = containers
         self.assignment = assignment
+        self.unassigned = unassigned
+        self.update_assignment()
         self.graph = graph
         self.ll = low_level
         self.h = heuristic
+
+    def update_assignment(self):
+        for c in self.unassigned:
+            for agent in self.agents:
+                self.assignment[agent].append(c)
 
     def find_solution(self):
         constrains = defaultdict()
@@ -273,6 +281,9 @@ class CBP_FCA():
         #to the two agents
         for container1 in self.assignment[agent1]:
             for container2 in self.assignment[agent2]:
+
+                if container2 == container1:
+                    continue
 
                 path1 = plan1[container1]
                 path2 = plan2[container2]

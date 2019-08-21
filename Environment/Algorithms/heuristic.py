@@ -31,3 +31,11 @@ def shortest_dist(agent_pos, containers_pos, cont_goals):
         dist += dir_dist(pos, cont_goals[pos_num])
         #print(str(dist))
     return dist
+
+def container_dist(agent_pos, containers_pos, cont_goals):
+    dist = 0
+    #heuristic from each container to its goal location
+    for pos_num, pos in enumerate(containers_pos):
+        dist += dir_dist(pos, cont_goals[pos_num])
+        #print(str(dist))
+    return dist

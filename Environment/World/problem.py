@@ -30,6 +30,36 @@ class Problem():
         # create blocking
         self.blocking = defaultdict()
         #self.block()
+        #list of unassigned contaiers
+        self.unassigned = []
+        self.unassign()
+
+
+    def unassign(self):
+        """
+        creates a list of unassigned containers.
+        """
+        containers = []
+        i = len(self.containers)
+        for x in range(self.graph.xdim):
+            for y in range(self.graph.ydim):
+                #to create blocks of 5 containers use mod 6
+                #all the positions where x = 0, 1, 7, 13 and grap.xdim-1 should
+                #not be blocked
+                #all the position where y = 0,3,6,9,.. should not be blocked
+                if x == 0 or (x % 6 == 1) or (x == self.graph.xdim-1):
+                    continue
+                if (y % 3 == 0) or (y == self.graph.ydim-1):
+                    continue
+                ##if container not included in self.containers
+                node = self.graph.n(x,y)
+                for c in self.containers:
+                    if c.pos == node:
+                        containers.append(Container(i, node, node))
+                        i += 1
+        for c in containers:
+            self.unassigned.append(c)
+
 
 
     def block(self):
