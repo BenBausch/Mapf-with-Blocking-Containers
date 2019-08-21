@@ -110,10 +110,10 @@ if __name__ == "__main__":
     stop = int(arguments[1])
     f_num = int(arguments[2])
     #print("PARSING THE MAP!")
-    #tasks = "./maps/boston_0/tasks"+ str(f_num) +".txt"
-    #file2 = "./maps/boston_0/Boston_0_256.txt"
-    tasks = "./maps/brc/tasks"+ str(f_num) +".txt"
-    file2 = "./maps/brc/brc.txt"
+    tasks = "./maps/boston_0/tasks"+ str(f_num) +".txt"
+    file2 = "./maps/boston_0/Boston_0_256.txt"
+    #tasks = "./maps/brc/tasks"+ str(f_num) +".txt"
+    #file2 = "./maps/brc/brc.txt"
     #tasks = "./maps/small/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/small/s.txt"
     #tasks = "./maps/random32/tasks"+ str(f_num) +".txt"
@@ -157,16 +157,16 @@ if __name__ == "__main__":
         c = cont.goal
         print(str(c) + " " + str(c.is_wall) + "    ", end="")"""
     #print("\n")
-    sol = C_Cbs(
+    sol = CBP_FCA(
         p.agents,
         p.containers,
         p.assignment,
-        p.blocking,
+        #p.blocking,
         p.graph,
-        TAstar,
-        dir_dist).find_solution()
-        #planningAstar,
-        #shortest_dist).find_solution()
+        #TAstar,
+        #dir_dist).find_solution()
+        planningAstar,
+        shortest_dist).find_solution()
     print(len(p.agents))
     print(sol[1])
     print(sol[2])
