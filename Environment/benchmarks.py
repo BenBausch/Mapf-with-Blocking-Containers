@@ -110,14 +110,14 @@ if __name__ == "__main__":
     stop = int(arguments[1])
     f_num = int(arguments[2])
     #print("PARSING THE MAP!")
-    tasks = "./maps/boston_0/tasks"+ str(f_num) +".txt"
-    file2 = "./maps/boston_0/Boston_0_256.txt"
+    #tasks = "./maps/boston_0/tasks"+ str(f_num) +".txt"
+    #file2 = "./maps/boston_0/Boston_0_256.txt"
     #tasks = "./maps/brc/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/brc/brc.txt"
     #tasks = "./maps/small/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/small/s.txt"
-    #tasks = "./maps/random32/tasks"+ str(f_num) +".txt"
-    #file2 = "./maps/random32/r32.txt"
+    tasks = "./maps/random32/tasks"+ str(f_num) +".txt"
+    file2 = "./maps/random32/r32.txt"
     #tasks = "./maps/coast/tasks"+ str(f_num) +".txt"
     #file2 = "./maps/coast/c.txt"
     #tasks = "./maps/densem128/tasks"+ str(f_num) +".txt"

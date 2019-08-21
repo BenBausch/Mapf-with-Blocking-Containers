@@ -82,16 +82,17 @@ class PAstar():
         start_h = self.heuristic(self.agent.pos, c_pos, self.goals)
         start = PAstarNode(None, self.agent.pos, c_pos, 0, 0, start_h)
         open.put(start)
-        open_hash[self.h_string(start.f, start.a_pos, start.c_pos)] = True
+        open_hash[self.h_string(start.f, start.a_pos, start.c_pos)] = 1
         #print(self.h_string(start.f, start.a_pos, start.c_pos))
         #start A* search
         while not(open.empty()):
 
             #get the best node in open
             best_node = open.get()
+            #print("How often in the list?: " + str(open_hash[self.h_string(best_node.f, best_node.a_pos, best_node.c_pos)]))
             open_hash[self.h_string(best_node.f, best_node.a_pos, best_node.c_pos)] -=1
             #print("new best node : " + str(best_node.a_pos) + str(best_node.c_pos) + ", time: " + str(best_node.t) + "and heuristic:" + str(best_node.f))
-
+            #print(self.h_string(best_node.f, best_node.a_pos, best_node.c_pos))
             if self.is_goal(best_node):
                 #print("the length of the closed list is :" + str(len(closed)))
                 plan = []
@@ -180,6 +181,7 @@ class PAstar():
                             #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
                             if self.check_consistency(c_num, A.a_pos, A.c_pos, node.a_pos, node.c_pos, node.t + 1):
                                 open.put(A)
+                                #print("Added " + self.h_string(A.f, A.a_pos, A.c_pos))
                                 try:
                                     open_hash[self.h_string(A.f, A.a_pos, A.c_pos)] += 1
                                 except:
@@ -198,10 +200,11 @@ class PAstar():
                 self.heuristic(n, node.c_pos, self.goals)
                 )
             if not(self.check_already_opened(A, closed)):
-                if not(self.check_already_added(A, open)):
+                if not(self.check_already_added(A, open_hash)):
                     #print("checking nodes " +  str(node.vertex) + " and " + str(n) + "at time step " + str(node.time + 1))
                     if self.check_consistency(-1, A.a_pos, A.c_pos, node.a_pos, node.c_pos, node.t + 1):
                         open.put(A)
+                        #print("Added " + self.h_string(A.f, A.a_pos, A.c_pos))
                         try:
                             open_hash[self.h_string(A.f, A.a_pos, A.c_pos)] += 1
                         except:
@@ -224,7 +227,10 @@ class PAstar():
         """
         try:
             if open[self.h_string(n.f, n.a_pos, n.c_pos)] > 0:
+                #print("already addded")
                 return True
+            else:
+                return False
         except:
             return False
 
@@ -238,6 +244,7 @@ class PAstar():
         try:
             for i in closed[self.h_string(None,n.a_pos, n.c_pos)]:
                 if i == n.f:
+                    #print("already opened")
                     return True
             else:
                 return False

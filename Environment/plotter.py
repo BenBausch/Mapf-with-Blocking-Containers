@@ -38,6 +38,7 @@ def plot_experiment(path):
                             #if number indicates the make span cost
                             if line_num == 3:
                                 sum_makeSpan[agent_num] += number
+    print(sum_nodes)
     #average over all solved instaces for corresponding agent count
     for s in stats:
         for a_num, stat in enumerate(s):
@@ -47,23 +48,51 @@ def plot_experiment(path):
     #10 because total of 10 instances per agent count
     for a_num, a in enumerate(solved_agents):
         solved_agents[a_num] = a*10
-
+    #10 because total of 10 instances per agent count
+    for a_num, a in enumerate(sum_nodes):
+        sum_nodes[a_num] = a/10
+    #10 because total of 10 instances per agent count
+    for a_num, a in enumerate(sum_makeSpan):
+        sum_makeSpan[a_num] = a/10
+    #10 because total of 10 instances per agent count
+    for a_num, a in enumerate(sum_sic):
+        sum_sic[a_num] = a/10
     #to make diagram look nice
     solved_agents[0] = 100
 
     print(solved_agents)
 
     agent_list = [i for i in range(1,31)]
-    fig, ax = plt.subplots()
-    ax.spines['right'].set_visible(False)
-    ax.spines['top'].set_visible(False)
-    plt.ylabel("Instaces solved in [%]")
-    plt.xlabel("Number of agents")
-    plt.plot( agent_list, solved_agents,'go-')
-    plt.axis([0, 31, 0, 110])
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, sharey=False)
+
+
+    ax1.spines['right'].set_visible(False)
+    ax1.spines['top'].set_visible(False)
+    ax1.plot( agent_list, solved_agents,'go-')
+    ax1.axis([0, 31, 0, 110])
+    ax1.set(title='Percentage of Solved Problem Instances', ylabel='Tasks solved [%]', xlabel=("Number of Agents"))
+
+    ax2.spines['right'].set_visible(False)
+    ax2.spines['top'].set_visible(False)
+    ax2.bar( agent_list, sum_nodes)
+    ax2.axis([0, 31, 0, 500])
+    ax2.set(title='Average Number of High Level Nodes per Solved Instances', ylabel='High Level Nodes', xlabel=("Number of Agents"))
+
+    ax3.spines['right'].set_visible(False)
+    ax3.spines['top'].set_visible(False)
+    ax3.bar( agent_list, sum_makeSpan)
+    ax3.axis([0, 31, 0, 50])
+    ax3.set(title='Average Make Span per Solved Instances', ylabel='Make Span', xlabel=("Number of Agents"))
+
+    ax4.spines['right'].set_visible(False)
+    ax4.spines['top'].set_visible(False)
+    ax4.bar( agent_list, sum_sic)
+    ax4.axis([0, 31, 0, 1000])
+    ax4.set(title='Average SIC per Solved Instances', ylabel='SIC', xlabel=("Number of Agents"))
+
     plt.xticks([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29])
-    plt.yticks([i*10 for i in range(11)])
     plt.show()
+
 
 
 
@@ -73,5 +102,5 @@ def plot_experiment(path):
 if __name__=="__main__":
     arg = sys.argv
     name = (arg[1])
-    path = "./maps/" + name #+ "/cbs/"
+    path = "./maps/" + name + "/cbp/"
     plot_experiment(path)
